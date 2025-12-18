@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Datavyx</title>
+    <meta name="description" content="Thanks for joining the Datavyx waitlist! We'll notify you when we launch.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .check-icon {
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="check-icon text-8xl mb-6">✓</div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">You're On The List!</h1>
+            <p class="text-2xl md:text-3xl mb-4 opacity-90">
+                Thanks for joining the Datavyx waitlist
+            </p>
+        </div>
+    </section>
+
+    <!-- Confirmation Section -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-green-50 border-2 border-green-200 rounded-lg p-8 mb-8 fade-in">
+                <div class="flex items-start gap-4">
+                    <div class="text-3xl">📧</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Check Your Email</h3>
+                        <p class="text-gray-600">
+                            We just sent you a confirmation email. Please check your inbox (and spam folder, just in case).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                What Happens Next?
+            </h2>
+
+            <div class="space-y-6">
+                <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-lg fade-in" style="animation-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">We'll Email You in 2-3 Weeks</h3>
+                        <p class="text-gray-600">You'll be among the first to know when we launch. No spam, we promise.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-lg fade-in" style="animation-delay: 0.4s;">
+                    <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Get Exclusive Early Bird Bonuses</h3>
+                        <ul class="space-y-2 text-gray-600 mt-3">
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span>
+                                <span><strong>50 free queries</strong> (2x the standard welcome bonus)</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span>
+                                <span><strong>Lifetime 20% discount</strong> on all credit packs</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span>
+                                <span><strong>Priority support</strong> - your questions answered first</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-lg fade-in" style="animation-delay: 0.6s;">
+                    <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">3</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Start Analyzing Your Data Instantly</h3>
+                        <p class="text-gray-600">
+                            Upload your Excel file, ask questions, and get instant insights - all in under 60 seconds.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Reminder -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                While You Wait, Remember...
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-3">💰</div>
+                    <h3 class="font-bold text-lg mb-2 gradient-text">98% Cheaper</h3>
+                    <p class="text-gray-600">$1.99/query vs Tableau's $70/month</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-3">⚡</div>
+                    <h3 class="font-bold text-lg mb-2 gradient-text">Zero Learning</h3>
+                    <p class="text-gray-600">Ask in plain English, no SQL needed</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-3">🚀</div>
+                    <h3 class="font-bold text-lg mb-2 gradient-text">1 Minute Setup</h3>
+                    <p class="text-gray-600">Upload and start analyzing instantly</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Share -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">
+                Know someone who needs this?
+            </h2>
+            <p class="text-gray-600 mb-6">
+                Share Datavyx with your network. They'll thank you later!
+            </p>
+
+            <div class="flex justify-center gap-4">
+                <a href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20waitlist%20for%20Datavyx%20-%20an%20AI%20data%20assistant%20that%27s%2098%25%20cheaper%20than%20Tableau!%20Check%20it%20out:%20https://datavyx.com"
+                   target="_blank"
+                   class="inline-flex items-center gap-2 bg-blue-400 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                    Share on Twitter
+                </a>
+
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://datavyx.com"
+                   target="_blank"
+                   class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    Share on LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg text-white py-16 px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">
+                Questions? We're Here to Help
+            </h2>
+            <p class="text-xl mb-8 opacity-90">
+                Email us anytime at
+                <a href="mailto:support@datavyx.com" class="underline hover:no-underline">support@datavyx.com</a>
+            </p>
+
+            <a href="/" class="inline-block bg-white text-purple-600 font-bold text-lg px-10 py-4 rounded-full hover:bg-gray-100 transition shadow-lg">
+                ← Back to Home
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">© 2025 Datavyx. All rights reserved.</p>
+            <p class="text-gray-400 text-sm mb-4">
+                <a href="mailto:support@datavyx.com" class="hover:text-white">support@datavyx.com</a>
+            </p>
+            <div class="space-x-4 text-sm text-gray-400">
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <span>|</span>
+                <a href="#" class="hover:text-white">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
