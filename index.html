@@ -1,355 +1,216 @@
- <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Datavyx - Talk to Your Data Like ChatGPT</title>
-        <meta name="description" content="Get instant answers from your business data with AI. No SQL, no training. Just ask. $1.99 per query or buy credits pack.">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="AtlasAI by Datavyx connects the tools behind small business operations so work moves from lead to payment with fewer manual handoffs."
+    />
+    <meta name="theme-color" content="#071421" />
+    <link rel="canonical" href="https://datavyx.com/" />
+    <meta property="og:title" content="AtlasAI by Datavyx | Practical workflow integration" />
+    <meta property="og:description" content="Practical SaaS integration and workflow optimization for growing service businesses." />
+    <meta property="og:url" content="https://datavyx.com/" />
+    <title>AtlasAI by Datavyx | Practical workflow integration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
-        <!-- Tailwind CSS CDN -->
-        <script src="https://cdn.tailwindcss.com"></script>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="AtlasAI by Datavyx home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M16 3 29 27h-6.1l-2.4-4.8H11.5L9.1 27H3L16 3Zm0 9.1-2.5 5.2h5L16 12.1Z" />
+            </svg>
+          </span>
+          <span class="brand-copy"><span>AtlasAI</span><small>by Datavyx</small></span>
+        </a>
 
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span></span><span></span>
+        </button>
 
-            body {
-                font-family: 'Inter', sans-serif;
-            }
+        <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+          <a href="#what-we-fix">What we fix</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#fit">Who it is for</a>
+          <a class="nav-cta" href="mailto:crgken@gmail.com?subject=Workflow%20conversation%20with%20AtlasAI">Start a conversation <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
 
-            .gradient-bg {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-
-            .gradient-text {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-        </style>
-    </head>
-    <body class="bg-gray-50">
-
-        <!-- Hero Section -->
-        <section class="gradient-bg text-white py-20 px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h1 class="text-5xl md:text-6xl font-bold mb-6">DATAVYX</h1>
-                <h2 class="text-3xl md:text-4xl font-semibold mb-4">
-                    Talk to Your Data Like ChatGPT
-                </h2>
-                <p class="text-xl md:text-2xl mb-8 opacity-90">
-                    Get instant answers with beautiful charts.<br>
-                    No SQL. No training. Just ask.
-                </p>
-
-                <a href="#waitlist" class="inline-block bg-white text-purple-600 font-bold text-lg px-10 py-4 rounded-full hover:bg-gray-100 transition shadow-lg">
-                    Start Free - 25 Free Queries
-                </a>
-
-                <div class="mt-6 space-y-2 text-sm opacity-80">
-                    <p>✓ No credit card required</p>
-                    <p>✓ Set up in 60 seconds</p>
-                    <p>✓ Launching in 2 weeks</p>
-                </div>
+    <main id="main-content">
+      <section id="top" class="hero section-dark">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="container hero-layout">
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> SaaS integration for service businesses</p>
+            <h1>Make the work <em>between</em> your software disappear.</h1>
+            <p class="hero-intro">
+              AtlasAI helps growing teams connect the tools they already use, remove repetitive handoffs, and keep important work moving.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="mailto:crgken@gmail.com?subject=Workflow%20conversation%20with%20AtlasAI">Talk through a workflow <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="#how-it-works">See how we work <span aria-hidden="true">↓</span></a>
             </div>
-        </section>
+            <p class="hero-note">Start with one clear problem. Get a practical first fix.</p>
+          </div>
 
-        <!-- Problem Section -->
-        <section class="py-16 px-4 bg-white">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                    Why Most Tools Fail You
-                </h2>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-red-50 p-6 rounded-lg">
-                        <div class="text-3xl mb-3">❌</div>
-                        <h3 class="font-bold text-lg mb-2">Tableau costs $70/month</h3>
-                        <p class="text-gray-600">...and takes weeks to learn</p>
-                    </div>
-
-                    <div class="bg-red-50 p-6 rounded-lg">
-                        <div class="text-3xl mb-3">❌</div>
-                        <h3 class="font-bold text-lg mb-2">Hiring a data analyst?</h3>
-                        <p class="text-gray-600">That's $80k/year</p>
-                    </div>
-
-                    <div class="bg-red-50 p-6 rounded-lg">
-                        <div class="text-3xl mb-3">❌</div>
-                        <h3 class="font-bold text-lg mb-2">Your data sits in Excel</h3>
-                        <p class="text-gray-600">But you can't get quick answers</p>
-                    </div>
-
-                    <div class="bg-red-50 p-6 rounded-lg">
-                        <div class="text-3xl mb-3">❌</div>
-                        <h3 class="font-bold text-lg mb-2">ChatGPT?</h3>
-                        <p class="text-gray-600">No security, no charts, no memory</p>
-                    </div>
-                </div>
+          <div class="workflow-window reveal" aria-label="Example of a connected service workflow">
+            <div class="window-bar">
+              <span class="window-dots"><i></i><i></i><i></i></span>
+              <span class="window-label">A connected workflow</span>
+              <span class="window-status"><span></span> Live view</span>
             </div>
-        </section>
-
-        <!-- How It Works -->
-        <section class="py-16 px-4 bg-gray-50">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                    How Datavyx Works
-                </h2>
-
-                <div class="space-y-12">
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">1</div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2">Upload Your Excel or CSV</h3>
-                            <p class="text-gray-600">Drag and drop your business data. Takes 10 seconds.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">2</div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2">Ask in Plain English</h3>
-                            <p class="text-gray-600 mb-3">No SQL needed. Just ask naturally:</p>
-                            <div class="bg-white p-4 rounded-lg space-y-2 text-sm">
-                                <p class="text-purple-600">💬 "What was revenue last month?"</p>
-                                <p class="text-purple-600">💬 "Which product sells best?"</p>
-                                <p class="text-purple-600">💬 "Show me Q4 sales trend"</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">3</div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2">Get Instant Answers with Charts</h3>
-                            <p class="text-gray-600">Beautiful visualizations ready in seconds. Export to PDF or share with your team.</p>
-                        </div>
-                    </div>
+            <div class="workflow-body">
+              <div class="workflow-heading">
+                <div>
+                  <p class="mini-label">Field service flow</p>
+                  <h2>Lead to payment</h2>
                 </div>
+                <span class="flow-badge">4 steps</span>
+              </div>
+              <div class="flow-list">
+                <div class="flow-row done">
+                  <span class="flow-number">01</span>
+                  <span class="flow-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16" /></svg></span>
+                  <span class="flow-text"><strong>New inquiry</strong><small>Website form captured</small></span>
+                  <span class="flow-check" aria-label="Complete">✓</span>
+                </div>
+                <div class="flow-connector"></div>
+                <div class="flow-row done">
+                  <span class="flow-number">02</span>
+                  <span class="flow-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V9m7 10V5m7 14v-7" /></svg></span>
+                  <span class="flow-text"><strong>Job assigned</strong><small>Team and schedule updated</small></span>
+                  <span class="flow-check" aria-label="Complete">✓</span>
+                </div>
+                <div class="flow-connector"></div>
+                <div class="flow-row active">
+                  <span class="flow-number">03</span>
+                  <span class="flow-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+                  <span class="flow-text"><strong>Service completed</strong><small>Ready for the next handoff</small></span>
+                  <span class="flow-arrow" aria-hidden="true">→</span>
+                </div>
+                <div class="flow-connector muted"></div>
+                <div class="flow-row pending">
+                  <span class="flow-number">04</span>
+                  <span class="flow-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h3" /></svg></span>
+                  <span class="flow-text"><strong>Invoice + follow-up</strong><small>Triggered without re-entry</small></span>
+                  <span class="flow-more" aria-hidden="true">•••</span>
+                </div>
+              </div>
+              <div class="window-footer"><span>Built around your current tools</span><span class="footer-signal"><i></i> No platform replacement required</span></div>
             </div>
-        </section>
+          </div>
+        </div>
+        <div class="container hero-bottom reveal">
+          <span>For teams that have the tools—just too much work between them.</span>
+          <span class="scroll-cue"><span></span> Scroll to explore</span>
+        </div>
+      </section>
 
-        <!-- Comparison -->
-        <section class="py-16 px-4 bg-white">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-                    Datavyx vs Traditional Tools
-                </h2>
+      <section id="what-we-fix" class="section section-light">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow eyebrow-dark">The expensive gap</p>
+            <h2>Your business does not break inside one tool. It breaks in the handoff.</h2>
+            <p>When a lead, job, invoice, or follow-up has to be copied by hand, small misses become everyday operating cost.</p>
+          </div>
+          <div class="pain-grid">
+            <article class="pain-card reveal">
+              <div class="card-topline"><span class="card-index">01</span><span class="card-tag">Capture</span></div>
+              <h3>New leads get stuck in the inbox.</h3>
+              <p>Website inquiries, calls, and messages arrive in different places—and the next action is easy to miss.</p>
+              <div class="card-foot"><span class="signal signal-orange"></span> Missed follow-ups</div>
+            </article>
+            <article class="pain-card reveal">
+              <div class="card-topline"><span class="card-index">02</span><span class="card-tag">Coordinate</span></div>
+              <h3>Every job creates another copy-paste.</h3>
+              <p>Customer details move from CRM to schedule to field team, often through a spreadsheet or a reminder.</p>
+              <div class="card-foot"><span class="signal signal-blue"></span> Duplicate entry</div>
+            </article>
+            <article class="pain-card reveal">
+              <div class="card-topline"><span class="card-index">03</span><span class="card-tag">Close</span></div>
+              <h3>Completed work waits for admin.</h3>
+              <p>Service is done, but invoicing, payment status, and customer follow-up still depend on someone remembering.</p>
+              <div class="card-foot"><span class="signal signal-green"></span> Delayed cash flow</div>
+            </article>
+          </div>
+        </div>
+      </section>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="border-b-2 border-gray-300">
-                                <th class="py-4 px-4 text-gray-600">Feature</th>
-                                <th class="py-4 px-4 text-red-600">Traditional BI</th>
-                                <th class="py-4 px-4 text-purple-600">Datavyx</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Price</td>
-                                <td class="py-4 px-4">$70/month/user</td>
-                                <td class="py-4 px-4 font-bold text-purple-600">$1.99/query</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Learning Curve</td>
-                                <td class="py-4 px-4">Weeks to learn</td>
-                                <td class="py-4 px-4 font-bold text-purple-600">Zero learning</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Setup Time</td>
-                                <td class="py-4 px-4">1 month</td>
-                                <td class="py-4 px-4 font-bold text-purple-600">1 minute</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Query Language</td>
-                                <td class="py-4 px-4">Need SQL</td>
-                                <td class="py-4 px-4 font-bold text-purple-600">Plain English</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Flexibility</td>
-                                <td class="py-4 px-4">Fixed dashboards</td>
-                                <td class="py-4 px-4 font-bold text-purple-600">Ask anything</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+      <section id="fit" class="section section-sand">
+        <div class="container split-layout">
+          <div class="section-heading reveal">
+            <p class="eyebrow eyebrow-dark">A focused first engagement</p>
+            <h2>One business problem.<br /><em>One practical fix.</em></h2>
+            <p>We start where the friction is visible and the value is easy to explain. Your current software stays in the picture.</p>
+          </div>
+          <div class="service-list">
+            <article class="service-item reveal">
+              <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/><path d="M10 7h4a2 2 0 0 1 2 2v5"/></svg></span>
+              <div><h3>Connect existing tools</h3><p>CRM, scheduling, accounting, email, spreadsheets, or the systems your team already relies on.</p></div>
+              <span class="service-arrow" aria-hidden="true">↗</span>
+            </article>
+            <article class="service-item reveal">
+              <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h15M14 7l5 5-5 5"/><path d="M4 6h4M4 18h4"/></svg></span>
+              <div><h3>Automate repetitive handoffs</h3><p>Capture a request, create the next task, update status, and keep the right person informed.</p></div>
+              <span class="service-arrow" aria-hidden="true">↗</span>
+            </article>
+            <article class="service-item reveal">
+              <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg></span>
+              <div><h3>Build the missing layer</h3><p>When a small internal tool or a clear operational view is the simplest answer, we build only what is needed.</p></div>
+              <span class="service-arrow" aria-hidden="true">↗</span>
+            </article>
+          </div>
+        </div>
+      </section>
 
-        <!-- Pricing -->
-        <section class="py-16 px-4 bg-gray-50">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800">
-                    Simple, Pay-As-You-Go Pricing
-                </h2>
-                <p class="text-center text-gray-600 mb-12">Start with 25 FREE queries. Then choose:</p>
+      <section id="how-it-works" class="section section-light process-section">
+        <div class="container">
+          <div class="process-intro reveal">
+            <p class="eyebrow eyebrow-dark">How we work</p>
+            <h2>Small scope. Clear handoff.<br /><span>Useful in days, not months.</span></h2>
+          </div>
+          <div class="process-grid">
+            <article class="process-step reveal"><span class="step-no">01</span><div class="step-line"></div><h3>Map the friction</h3><p>We look at the current tools, the people involved, and the one point where work slows down or gets lost.</p></article>
+            <article class="process-step reveal"><span class="step-no">02</span><div class="step-line"></div><h3>Design the smallest fix</h3><p>We choose the lightest practical path: configuration, integration, automation, or a focused internal tool.</p></article>
+            <article class="process-step reveal"><span class="step-no">03</span><div class="step-line"></div><h3>Ship and improve</h3><p>You get a working first version, a clear handoff, and an honest next step based on what actually happened.</p></article>
+          </div>
+          <div class="fit-note reveal"><span class="fit-note-mark">+</span><p><strong>Good fit:</strong> North American service businesses with a real workflow problem and existing tools to connect.</p></div>
+        </div>
+      </section>
 
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
-                    <div class="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200 text-center">
-                        <h3 class="text-2xl font-bold mb-2">STARTER</h3>
-                        <div class="text-4xl font-bold mb-4 gradient-text">$19</div>
-                        <ul class="space-y-3 mb-6 text-left inline-block">
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>50 queries</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>$0.38 per query</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>Save $81</span>
-                            </li>
-                        </ul>
-                    </div>
+      <section class="cta-section section-dark">
+        <div class="container cta-layout reveal">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Start with the workflow you already know is painful</p>
+            <h2>What is one handoff your team should not have to do by hand?</h2>
+          </div>
+          <div class="cta-action"><a class="button button-primary" href="mailto:crgken@gmail.com?subject=Workflow%20conversation%20with%20AtlasAI">Email Ken at AtlasAI <span aria-hidden="true">↗</span></a><p>Tell us what happens today. We will reply with a practical first view.</p></div>
+        </div>
+      </section>
+    </main>
 
-                    <div class="bg-purple-600 text-white p-8 rounded-lg shadow-xl border-2 border-purple-700 transform scale-105 text-center">
-                        <div class="bg-yellow-400 text-purple-900 text-xs font-bold px-3 py-1 rounded-full inline-block mb-2">POPULAR</div>
-                        <h3 class="text-2xl font-bold mb-2">STANDARD</h3>
-                        <div class="text-4xl font-bold mb-4">$49</div>
-                        <ul class="space-y-3 mb-6 text-left inline-block">
-                            <li class="flex items-start">
-                                <span class="mr-2">✓</span>
-                                <span>150 queries</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="mr-2">✓</span>
-                                <span>$0.33 per query</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="mr-2">✓</span>
-                                <span>Save $249</span>
-                            </li>
-                        </ul>
-                    </div>
+    <footer class="site-footer">
+      <div class="container footer-main">
+        <a class="brand brand-footer" href="#top" aria-label="AtlasAI by Datavyx home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 29 27h-6.1l-2.4-4.8H11.5L9.1 27H3L16 3Zm0 9.1-2.5 5.2h5L16 12.1Z" /></svg></span><span class="brand-copy"><span>AtlasAI</span><small>by Datavyx</small></span></a>
+        <p>Practical integration for the work between your tools.</p>
+        <div class="footer-contact"><a class="footer-domain" href="https://datavyx.com/">datavyx.com <span aria-hidden="true">↗</span></a><a class="footer-email" href="mailto:crgken@gmail.com">crgken@gmail.com <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="container footer-bottom"><span>© <span id="current-year">2026</span> AtlasAI by Datavyx. Early-stage service studio.</span><span>Built for clear problems, not inflated platform promises.</span></div>
+    </footer>
 
-                    <div class="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200 text-center">
-                        <h3 class="text-2xl font-bold mb-2">PRO</h3>
-                        <div class="text-4xl font-bold mb-4 gradient-text">$99</div>
-                        <ul class="space-y-3 mb-6 text-left inline-block">
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>350 queries</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>$0.28 per query</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-2">✓</span>
-                                <span>Save $597</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <p class="text-center text-gray-600 mb-8">Or pay as you go: <span class="font-bold">$1.99 per query</span></p>
-
-                <div class="text-center space-y-2 text-sm text-gray-600">
-                    <p>✓ No subscription, no commitment</p>
-                    <p>✓ Credits never expire</p>
-                    <p>✓ Cancel anytime (nothing to cancel!)</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Trust Signals -->
-        <section class="py-16 px-4 bg-white">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-8 text-gray-800">Trusted & Secure</h2>
-
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="flex items-center justify-center gap-3">
-                        <span class="text-2xl">🔒</span>
-                        <span class="text-gray-700">SOC 2 Type II Compliant</span>
-                    </div>
-                    <div class="flex items-center justify-center gap-3">
-                        <span class="text-2xl">🛡️</span>
-                        <span class="text-gray-700">Bank-level encryption</span>
-                    </div>
-                    <div class="flex items-center justify-center gap-3">
-                        <span class="text-2xl">🔐</span>
-                        <span class="text-gray-700">Your data stays private</span>
-                    </div>
-                    <div class="flex items-center justify-center gap-3">
-                        <span class="text-2xl">💯</span>
-                        <span class="text-gray-700">14-day money-back guarantee</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Waitlist CTA -->
-        <section id="waitlist" class="gradient-bg text-white py-20 px-4">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                    Ready to Talk to Your Data?
-                </h2>
-                <p class="text-xl mb-8 opacity-90">
-                    Join 500+ businesses on the waitlist
-                </p>
-
-                <div class="bg-white p-8 rounded-lg shadow-2xl">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Join the Waitlist</h3>
-                    <p class="text-gray-600 mb-6">Get notified when we launch + exclusive bonuses</p>
-
-                    <!-- Mailchimp Form -->
-                    <form action="https://gmail.us20.list-manage.com/subscribe/post?u=38a07f50eb8c223279ae6e93e&id=8dd9b1e7bd&f_id=009721eef0" method="post" class="space-y-4">
-                        <input
-                            type="email"
-                            name="EMAIL"
-                            placeholder="Your email address"
-                            required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-600"
-                        >
-                        <input
-                            type="text"
-                            name="FNAME"
-                            placeholder="First name"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-600"
-                        >
-                        <input
-                            type="text"
-                            name="COMPANY"
-                            placeholder="Company (optional)"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-600"
-                        >
-                        <button
-                            type="submit"
-                            class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
-                        >
-                            Get Early Access →
-                        </button>
-                    </form>
-
-                    <div class="mt-6 space-y-2 text-sm text-gray-600">
-                        <p>🎁 Early birds get 50 free queries (2x bonus)</p>
-                        <p>💰 Lifetime 20% discount</p>
-                        <p>⚡ Priority support</p>
-                    </div>
-
-                    <p class="mt-4 text-xs text-gray-500">
-                        We'll notify you in 2-3 weeks. No spam, unsubscribe anytime.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="bg-gray-900 text-white py-8 px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <p class="mb-2">© 2025 Datavyx. All rights reserved.</p>
-                <p class="text-gray-400 text-sm mb-4">
-                    <a href="mailto:support@datavyx.com" class="hover:text-white">support@datavyx.com</a>
-                </p>
-                <div class="space-x-4 text-sm text-gray-400">
-                    <a href="#" class="hover:text-white">Privacy Policy</a>
-                    <span>|</span>
-                    <a href="#" class="hover:text-white">Terms of Service</a>
-                </div>
-            </div>
-        </footer>
-
-    </body>
-    </html>
+    <script src="script.js"></script>
+  </body>
+</html>
