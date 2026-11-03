@@ -1,6 +1,8 @@
-# AtlasAI website
+# Datavyx website
 
-This is a dependency-free static landing page for AtlasAI. It is intentionally separate from the existing application prototypes so it can be deployed independently.
+This is a dependency-free static website for Datavyx. It is separate from the product application and can be deployed independently.
+
+The current product web app is hosted at <https://kb.datavyx.com/>. It is a responsive Flutter Web PWA for desktop and mobile browsers. Users sign in or create an account through Auth0 before opening a personal workspace.
 
 ## Local preview
 
@@ -12,7 +14,7 @@ python -m http.server 4173
 
 Then open <http://localhost:4173>.
 
-## Low-cost deployment
+## Static site deployment
 
 Recommended first deployment: Cloudflare Pages with the existing `datavyx.com` domain.
 
@@ -27,7 +29,7 @@ GitHub Pages is a suitable alternative, but the custom-domain setup is more manu
 
 ## Before public outreach
 
-- Use `https://datavyx.com/` in the email signature after DNS is active.
-- Keep the public brand wording as **AtlasAI by Datavyx** so the service name and domain are clear to prospects.
+- Use `https://datavyx.com/` as the public website address.
+- Keep the public brand wording as **Datavyx**.
 - Add a real business mailing address before sending commercial email in the US; this page does not invent one.
 - If a custom domain is purchased, configure SPF/DKIM/DMARC for the sending mailbox separately.
