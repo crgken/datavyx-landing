@@ -21,6 +21,10 @@
         pixelId: "75iYMkkN54ohXh6qRCz7gz",
         debug: ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname),
       });
+      window.oaiq("measure", "page_viewed", {
+        type: "contents",
+        contents: [{ id: "datavyx_home", content_type: "page" }],
+      });
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Datavyx gives your AI assistant a lasting personal knowledge base. Save information, trace sources and changes, and query your records through MCP." />

@@ -14,7 +14,7 @@ The website preserves the Datavyx brand and English visual identity. It covers s
 - Personal spaces use the trusted login identity; different identities remain separate. Authorized existing memberships are still checked by the service.
 - Permanent erasure is not offered. Client-side tool permission prompts are separate from Datavyx's direct transaction execution.
 
-Update access wording only after actual acceptance and production rollout. The page initializes the OpenAI Ads Pixel without sending explicit conversion events. Pixel debug logging is enabled on local loopback addresses. There is no signup form, knowledge API call, or backend dependency on this page.
+Update access wording only after actual acceptance and production rollout. After initializing the OpenAI Ads Pixel, the homepage queues one `page_viewed` event per full page load, with `datavyx_home` as the page identifier. Pixel debug logging is enabled on local loopback addresses. There is no signup form, knowledge API call, or backend dependency on this page.
 
 ## Browser interactions
 
