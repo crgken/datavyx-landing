@@ -2,6 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      (function (w, d, s, url) {
+        if (w.oaiq) return;
+        var queue = function () {
+          queue.q.push(arguments);
+        };
+        queue.q = [];
+        w.oaiq = queue;
+        var script = d.createElement(s);
+        script.async = true;
+        script.src = url;
+        var firstScript = d.getElementsByTagName(s)[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+      })(window, document, "script", "https://bzrcdn.openai.com/sdk/oaiq.min.js");
+
+      window.oaiq("init", {
+        pixelId: "75iYMkkN54ohXh6qRCz7gz",
+        debug: ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname),
+      });
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Datavyx gives your AI assistant a lasting personal knowledge base. Save information, trace sources and changes, and query your records through MCP." />
     <meta name="theme-color" content="#071421" />
