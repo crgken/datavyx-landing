@@ -40,6 +40,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
+    <script src="analytics.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -150,7 +151,20 @@
         <p>A lasting knowledge base for your AI.</p>
         <div class="footer-contact"><a class="footer-domain" href="https://www.datavyx.com/">datavyx.com <span aria-hidden="true">↗</span></a><a class="footer-email" href="mailto:ken@datavyx.com">ken@datavyx.com <span aria-hidden="true">↗</span></a><a class="footer-email" href="#connect">Connection guide <span aria-hidden="true">↑</span></a></div>
       </div>
-      <div class="container footer-bottom"><span>© <span id="current-year">2026</span> Datavyx.</span><span>Your records. Their sources. A history you can follow.</span></div>
+      <div class="container footer-bottom"><span>© <span id="current-year">2026</span> Datavyx.</span><span>Your records. Their sources. A history you can follow.</span><button id="analytics-preferences" class="privacy-link" type="button" hidden>Analytics preferences</button></div>
+      <details id="privacy-notice" class="container privacy-notice">
+        <summary>Website privacy &amp; analytics</summary>
+        <p>With your permission, Microsoft Clarity uses cookies to measure visits, clicks, scrolling and session replays on this public website. Microsoft processes this usage data. We do not send account identifiers, email addresses or knowledge records to Clarity. You can decline or withdraw permission through Analytics preferences. Declining does not prevent you from using this website.</p>
+        <p>A separate OpenAI Ads Pixel measures advertising-related page views. The Clarity preference does not control that pixel. See the <a href="https://www.microsoft.com/privacy/privacystatement">Microsoft Privacy Statement</a>, <a href="https://clarity.microsoft.com/terms">Clarity Terms of Use</a> and <a href="https://openai.com/policies/privacy-policy/">OpenAI Privacy Policy</a>. For questions, contact <a href="mailto:ken@datavyx.com">ken@datavyx.com</a>.</p>
+      </details>
     </footer>
+    <section id="analytics-banner" class="analytics-banner" aria-labelledby="analytics-title" hidden>
+      <div>
+        <h2 id="analytics-title">Help us improve Datavyx</h2>
+        <p>Allow Microsoft Clarity cookies and session replays to help us understand visits and clicks? You can change your choice anytime. This choice applies to Clarity only. <a href="#privacy-notice">Privacy details</a></p>
+        <p id="analytics-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="analytics-actions"><button id="analytics-decline" type="button">Decline</button><button id="analytics-allow" type="button">Allow analytics</button></div>
+    </section>
   </body>
 </html>
