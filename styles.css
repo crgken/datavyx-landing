@@ -171,6 +171,13 @@ section[id] { scroll-margin-top: 24px; }
 .pricing-card ul { margin: 0; padding-inline-start: 20px; }
 .pricing-card li + li { margin-top: 5px; }
 .pricing-card li::marker { color: #237e70; }
+.pricing-card-unavailable { color: #5d6670; background: #e7e9ec; border-color: #cbd0d6; }
+.pricing-card-unavailable .plan-price span { color: inherit; }
+.pricing-card-unavailable li::marker { color: #707985; }
+.plan-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; margin-bottom: 12px; }
+.plan-heading h3 { margin: 0; }
+.plan-badge { max-width: 100%; padding: 6px 10px; border-radius: 4px; color: #fff; background: #49525b; font: 700 11px/1.4 var(--body); letter-spacing: .04em; overflow-wrap: anywhere; }
+.plan-status-pending { color: #4b5563; font-weight: 700; }
 .faq-layout { display: grid; grid-template-columns: .85fr 1fr; gap: 80px; }
 .faq-list { border-top: 1px solid var(--line); }
 .faq-list details { padding: 22px 0; border-bottom: 1px solid var(--line); }
