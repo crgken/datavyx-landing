@@ -96,23 +96,22 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--cyan); outline-
 [hidden] { display: none !important; }
 section[id] { scroll-margin-top: 24px; }
 .hero { min-height: 860px; padding-bottom: 115px; }
-.workflow-window { width: 100%; }
-.window-bar { gap: 12px; }
-.example-label { color: #b8d3d8; font-size: 9px; }
-.chat-message { margin-top: 17px; padding: 0 0 0 13px; border-left: 2px solid #3d6577; }
-.message-author { color: #c4d6dc; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.workflow-window { width: 100%; margin: 0; }
+.window-bar { gap: 12px; color: #e5eff0; font-size: 13px; font-weight: 700; }
+.example-label { color: #b8d3d8; font-size: 11px; font-weight: 500; }
+.workflow-chat + .workflow-chat { margin-top: 20px; padding-top: 17px; border-top: 1px solid #36515c; }
+.chat-message { margin-top: 10px; padding: 0 0 0 13px; border-left: 2px solid #3d6577; }
+.message-author { color: #c4d6dc; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
 .chat-message p { margin: 4px 0 0; color: #e5eff0; font-size: 14px; line-height: 1.6; }
 .assistant-message { border-color: var(--cyan); }
 .assistant-message .message-author { color: var(--cyan); }
 .assistant-message p { color: #acc5cc; }
-.example-record { margin-top: 22px; padding: 18px; border: 1px solid #38695f; border-radius: 5px; background: #102e35; }
-.record-value { margin-top: 6px; color: var(--cyan); font: 600 38px/1.2 var(--display); letter-spacing: -.04em; }
-.record-value > span { font: 500 13px var(--body); letter-spacing: .04em; }
-.example-record > p { margin: 5px 0 16px; color: #bbd2d4; font-size: 12px; }
-.record-history { display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; margin-top: 8px; border-top: 1px solid #31514f; color: #aac6c6; font-size: 11px; }
-.record-history > span:last-child { color: #d1ebe5; text-align: right; }
-.example-caption { margin: 14px 0 0; color: #98b2bb; font-size: 10px; }
-.mini-label { color: #a4c0c9; }
+.example-record { margin-top: 14px; padding: 14px; border: 1px solid #38695f; border-radius: 5px; background: #102e35; }
+.record-value { margin: 4px 0 10px; color: var(--cyan); font: 600 36px/1.1 var(--display); letter-spacing: -.04em; }
+.record-source { padding-top: 9px; border-top: 1px solid #38695f; }
+.record-source p { margin: 0 0 4px; }
+.record-source blockquote { margin: 0; color: #d1ebe5; font-size: 13px; line-height: 1.5; }
+.mini-label { color: #a4c0c9; font-size: 12px; }
 .hero-note, .hero-bottom { color: #9fb6bf; }
 .pain-card { min-height: 345px; }
 .pain-card h3 { margin-top: 40px; }
@@ -132,14 +131,26 @@ section[id] { scroll-margin-top: 24px; }
 .endpoint-control { display: flex; flex-wrap: wrap; gap: 10px; }
 .endpoint-control input { flex: 1 1 240px; min-width: 0; width: 100%; padding: 13px; border: 1px solid #567480; border-radius: 4px; color: #eff7f7; background: #071b28; font: 13px/1.6 monospace; }
 .endpoint-control .button { flex: 0 0 auto; border: 0; cursor: pointer; font-family: inherit; }
-.copy-status { min-height: 40px; margin: 9px 0 22px; color: #b3c8cd; font-size: 12px; }
-.availability { padding-top: 22px; border-top: 1px solid #36515c; }
-.availability-tag { display: inline-block; padding: 4px 10px; border: 1px solid #4c8575; border-radius: 30px; color: #a0e6ce; font-size: 11px; }
-.availability h3 { margin: 18px 0 12px; font-size: 24px; line-height: 1.2; }
-.availability p, .connection-note { color: #b3c8cd; font-size: 13px; }
-.connection-steps { margin: 25px 0; padding-left: 21px; color: #deebed; font-size: 13px; }
+.copy-status { margin: 9px 0 18px; color: #b3c8cd; font-size: 13px; }
+.availability { margin-bottom: 20px; padding-bottom: 17px; border-bottom: 1px solid #36515c; }
+.availability h3 { margin: 0 0 10px; font-size: 24px; line-height: 1.2; }
+.availability p { margin: 8px 0 0; }
+.availability p, .connection-note { color: #b3c8cd; font-size: 14px; }
+.availability a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.connection-steps { margin: 18px 0 10px; padding-left: 21px; color: #deebed; font-size: 14px; }
 .connection-steps li { padding: 0 0 11px 5px; }
 .connection-steps li::marker { color: var(--cyan); }
+.starter-prompts { padding: 15px; border: 1px solid #36515c; border-radius: 5px; background: #0d2130; }
+.starter-prompts h4 { margin: 0 0 12px; font-size: 16px; }
+.starter-prompts ol { margin: 0; padding: 0; list-style: none; }
+.starter-prompts li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 14px; }
+.starter-prompts li + li { margin-top: 12px; padding-top: 12px; border-top: 1px solid #36515c; }
+.starter-prompts li > div { flex: 1 1 215px; }
+.starter-prompts li p { margin: 4px 0 0; color: #b3c8cd; }
+.prompt-copy { min-height: 44px; padding: 6px 10px; border: 1px solid #567480; border-radius: 4px; color: var(--cyan); background: transparent; cursor: pointer; font: inherit; }
+.prompt-copy:hover { background: #16364a; }
+.prompt-copy-status { margin: 10px 0 0; color: #b3c8cd; font-size: 13px; }
+.prompt-copy-status:empty { margin: 0; }
 .connection-note { margin-bottom: 0; padding-top: 18px; border-top: 1px solid #36515c; }
 .faq-layout { display: grid; grid-template-columns: .85fr 1fr; gap: 80px; }
 .faq-list { border-top: 1px solid var(--line); }
@@ -147,6 +158,7 @@ section[id] { scroll-margin-top: 24px; }
 .faq-list summary { cursor: pointer; color: var(--ink); font: 600 18px/1.5 var(--display); letter-spacing: -.02em; }
 .faq-list summary::marker { color: #237e70; }
 .faq-list details p { margin: 16px 0 0; color: #536473; font-size: 14px; }
+.faq-list details p a { color: #237e70; text-decoration: underline; text-underline-offset: 3px; }
 .cta-action p a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
 input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep); outline-offset: 4px; }
 
@@ -166,7 +178,6 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
   .service-item { grid-template-columns: 28px minmax(0, 1fr); }
   .pain-card { min-height: 300px; }
   .pain-card h3 { max-width: none; }
-  .copy-status { min-height: 0; }
   html:not(.js) .site-header { position: relative; background: var(--navy); }
   html:not(.js) .header-inner { flex-wrap: wrap; padding: 20px 0; }
   html:not(.js) .site-nav { position: static; display: flex; flex-basis: 100%; margin-top: 20px; }

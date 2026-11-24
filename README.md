@@ -8,9 +8,8 @@ The website preserves the Datavyx brand and English visual identity. It covers s
 
 ## Published claims and access status
 
-- Production ChatGPT use is verified in the backend repository's `docs/50-运行记录/MCP正式发布报告-2026-11-12.md`.
-- OAuth DCR self-service admission is installed in an isolated candidate, not released in production. Auth0 setup and discovery have been checked, but real Claude/Gemini login and two-user acceptance are still pending; see the backend repository's `docs/50-运行记录/MCP客户端自助接入后端开发报告-2026-11-13.md`.
-- The page must not advertise generally available self-service signup, show candidate URLs, distribute shared OAuth credentials, or describe the old draft approval flow.
+- Production MCP connection, saving, and recall in a new chat have passed acceptance. The public guide covers ChatGPT on the web and explains plan and workspace requirements before users copy the URL.
+- The formal `/mcp` endpoint accepts eligible OAuth clients using automatic registration. The guide describes this option when the client offers it. See `docs/50-运行记录/MCP正式自助接入发布记录-2026-11-24.md` in the backend repository for rollout details.
 - Personal spaces use the trusted login identity; different identities remain separate. Authorized existing memberships are still checked by the service.
 - Permanent erasure is not offered. Client-side tool permission prompts are separate from Datavyx's direct transaction execution.
 
@@ -20,7 +19,7 @@ Update access wording only after actual acceptance and production rollout. After
 
 Microsoft Clarity project `zhvsyh2koe` is integrated through `analytics.js`. The tag loads only after the visitor selects **Allow analytics**; a stored decline prevents loading. **Analytics preferences** in the footer reopens the choice. Withdrawing permission clears Clarity's first-party cookies and reloads the page to unload the recorder. If browser storage is blocked, the choice applies only to that page. The preference controls Clarity only; the existing OpenAI Ads Pixel remains separate and is disclosed in the footer privacy notice. Clarity receives `analytics_Storage: granted` and `ad_Storage: denied` via Consent V2. No custom identity is sent. The explicit click events are `connection_guide_clicked`, `copy_mcp_clicked` (a click, not a successful clipboard write), and `connection_help_clicked`. Data starts after deployment and consent; it does not reconstruct past visits. A blocked tag does not interrupt the site.
 
-The connection address stays readable/selectable without JavaScript. With JavaScript enabled, Copy URL reports success through a live status region; blocked clipboard access selects the address and explains manual copying. FAQ uses native `details` elements. Mobile navigation supports keyboard Escape and remains visible if JavaScript is unavailable.
+The connection address and the two Project Cedar prompts stay readable and selectable without JavaScript. Copy actions report success through live status regions. If clipboard access is blocked, the URL is selected for manual copying and the prompt status explains how to copy the visible text. FAQ uses native `details` elements. Mobile navigation supports keyboard Escape and remains visible if JavaScript is unavailable.
 
 Verified locally on 2026-11-13: 1440px desktop, 390px mobile, and 320px narrow layouts have no horizontal page overflow; internal anchors resolve; clipboard success and denied-access fallback work; mobile menu closes after navigation; FAQ expands; the navigation and page remain readable with script execution disabled. Browser console reported no errors. JavaScript syntax check passed. Production publication must be verified separately against the custom domain after deployment.
 
@@ -44,11 +43,22 @@ Hosting verified on 2026-11-13: the live website <https://www.datavyx.com/> is s
 4. Wait for deployment statuses for the exact new commit, then compare the custom domain's HTML, CSS and JavaScript with that commit. A successful Git push alone is not proof of publication.
 5. Preserve the original DNS, domain, audience, and unrelated files. Do not create a replacement hosting project or run the retired Flutter/backend deployment scripts.
 
-The older Cloudflare Pages instructions were a recommendation, not the actual production setup. GitHub hosts the source; Vercel serves the website.
+### Canonical domain release check
+
+The apex currently redirects to `https://www.datavyx.com/` with 307 and preserves the request path and query string. In the existing Vercel project that serves the apex, open **Settings → Domains → datavyx.com → Edit**. Keep `www.datavyx.com` as the redirect target and set the status to **308 Permanent Redirect**. This is a Vercel domain setting and is applied independently of the Git deployment.
+
+Verify both the homepage and a path with campaign parameters using a request that does not follow redirects:
+
+```powershell
+curl.exe -sSI 'https://datavyx.com/'
+curl.exe -sSI 'https://datavyx.com/robots.txt?utm_source=release-check'
+```
+
+Expect 308 responses with `Location` pointing to `www.datavyx.com` and retaining the path and query string. Check the HTTP variants end on the HTTPS canonical host. Verify `https://www.datavyx.com/robots.txt` and `https://www.datavyx.com/sitemap.xml` both return 200 after deployment. In Google Search Console, inspect the `www` homepage before requesting indexing.
 
 ## Before public outreach
 
-- Use `https://datavyx.com/` as the public website address.
+- Use `https://www.datavyx.com/` as the public website address.
 - Keep the public brand wording as **Datavyx**.
 - Add a real business mailing address before sending commercial email in the US; this page does not invent one.
 - If a custom domain is purchased, configure SPF/DKIM/DMARC for the sending mailbox separately.

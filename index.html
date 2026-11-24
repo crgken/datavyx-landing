@@ -49,7 +49,7 @@
         <a class="brand" href="#top" aria-label="Datavyx home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 29 27h-6.1l-2.4-4.8H11.5L9.1 27H3L16 3Zm0 9.1-2.5 5.2h5L16 12.1Z" /></svg></span><span>Datavyx</span></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Toggle navigation</span><span></span><span></span></button>
         <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
-          <a href="#capabilities">What you can do</a><a href="#how-it-works">How it works</a><a href="#questions">FAQ</a><a class="nav-cta" href="#connect">Connection guide <span aria-hidden="true">↗</span></a>
+          <a href="#capabilities">What you can do</a><a href="#how-it-works">How it works</a><a href="#questions">FAQ</a><a class="nav-cta" href="#connect">Connection guide <span aria-hidden="true">↓</span></a>
         </nav>
       </div>
     </header>
@@ -60,21 +60,29 @@
           <div class="hero-copy">
             <p class="eyebrow"><span class="eyebrow-dot"></span> Personal knowledge, connected through MCP</p>
             <h1>Your knowledge.<br /><em>Beyond one chat.</em></h1>
-            <p class="hero-intro">Give your AI assistant a lasting place for the information that matters. Save facts and original notes, find them later, and keep changes traceable to their sources.</p>
-            <div class="hero-actions"><a class="button button-primary" href="#connect">See connection guide <span aria-hidden="true">↗</span></a><a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a></div>
-            <p class="hero-note">Use Datavyx through an authorized MCP connection in your AI assistant.</p>
+            <p class="hero-intro">Save project facts and notes in your AI chat, find them in a new conversation, and see where the answers came from.</p>
+            <div class="hero-actions"><a class="button button-primary" href="#connect">See connection guide <span aria-hidden="true">↓</span></a><a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a></div>
+            <p class="hero-note">Verified on ChatGPT web. Access depends on your plan and workspace.</p>
           </div>
-          <div class="workflow-window" aria-label="Illustrative conversation showing a saved fact, a correction, and its source">
-            <div class="window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>AI assistant + Datavyx</span><span class="example-label">Illustration</span></div>
+          <figure class="workflow-window" aria-labelledby="cedar-example-title">
+            <figcaption class="window-bar"><span id="cedar-example-title">Project Cedar</span><span class="example-label">Example</span></figcaption>
             <div class="workflow-body">
-              <p class="mini-label">One fact. A history you can follow.</p>
-              <div class="chat-message"><span class="message-author">You</span><p>Remember: Project Cedar has a budget of 12,000 USD.</p></div>
-              <div class="chat-message assistant-message"><span class="message-author">Assistant · saved in Datavyx</span><p>Saved the budget with your original note as its source.</p></div>
-              <div class="chat-message"><span class="message-author">You</span><p>Correct Cedar’s budget to 15,000 USD.</p></div>
-              <div class="example-record"><span class="mini-label">After correction</span><div class="record-value">15,000 <span>USD</span></div><p>Current budget · Project Cedar</p><div class="record-history"><span>Previous value</span><span>12,000 USD</span></div><div class="record-history"><span>Sources &amp; change history</span><span>Retained</span></div></div>
-              <p class="example-caption">Example content showing the workflow, not a live record.</p>
+              <div class="workflow-chat">
+                <p class="mini-label">First chat · Save a note</p>
+                <div class="chat-message"><span class="message-author">You</span><p>Save this project note: Project Cedar’s approved budget is 15,000 USD.</p></div>
+                <div class="chat-message assistant-message"><span class="message-author">Datavyx · Save receipt</span><p>Saved Cedar’s budget and kept your original note.</p></div>
+              </div>
+              <div class="workflow-chat">
+                <p class="mini-label">New chat · Find it again</p>
+                <div class="chat-message"><span class="message-author">You</span><p>What’s the approved budget for Project Cedar?</p></div>
+                <div class="example-record">
+                  <span class="message-author">Datavyx result · Approved budget</span>
+                  <p class="record-value">$15,000</p>
+                  <div class="record-source"><p class="message-author">Source · Original project note</p><blockquote>Project Cedar’s approved budget is 15,000 USD.</blockquote></div>
+                </div>
+              </div>
             </div>
-          </div>
+          </figure>
         </div>
         <div class="container hero-bottom"><span>Record with context. Retrieve with evidence.</span><span class="scroll-cue"><span></span> Scroll to explore</span></div>
       </section>
@@ -116,14 +124,30 @@
 
       <section id="connect" class="section section-dark connect-section">
         <div class="container connect-layout">
-          <div class="section-heading"><p class="eyebrow"><span class="eyebrow-dot"></span> Connect to Datavyx</p><h2>Bring your knowledge<br /><em>into the conversation.</em></h2><p>Use the production MCP server address in an authorized AI client. Sign in through the authorization page opened by your client.</p><a class="text-link" href="mailto:ken@datavyx.com?subject=Datavyx%20MCP%20access">Get help connecting <span aria-hidden="true">↗</span></a></div>
+          <div class="section-heading"><h2>Connect Datavyx<br /><em>to your AI chat.</em></h2><p>Use your own Datavyx account to save records and find them again in a new conversation.</p><a class="text-link" href="mailto:ken@datavyx.com?subject=Datavyx%20MCP%20access">Get help connecting <span aria-hidden="true">↗</span></a></div>
           <div class="connection-panel">
-            <label class="endpoint-label" for="mcp-url">Production MCP server URL</label>
+            <div class="availability">
+              <h3>ChatGPT on the web</h3>
+              <p>Connecting, saving and finding a saved record in a new chat are verified on the production server.</p>
+              <p>Saving and other write actions require Business, Enterprise or Edu. Pro supports reading and searching. Workspace permissions determine who can add and use the connection. <a href="https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt">Check ChatGPT requirements</a>.</p>
+            </div>
+            <label class="endpoint-label" for="mcp-url">MCP server URL</label>
             <div class="endpoint-control"><input id="mcp-url" type="url" value="https://kb.datavyx.com/mcp" readonly spellcheck="false" /><button id="copy-mcp" class="button button-primary" type="button" hidden>Copy URL</button></div>
             <p id="copy-status" class="copy-status" role="status" aria-live="polite">Select the address to copy it manually.</p>
-            <div class="availability"><span class="availability-tag">ChatGPT · verified</span><h3>Access is available through authorized connections.</h3><p>Connect Datavyx to ChatGPT using the steps below. Sign in or create an account during authorization to get started.</p></div>
-            <ol class="connection-steps"><li>Open your AI client’s custom MCP connection settings.</li><li>Enter the server URL and complete the supported OAuth setup.</li><li>Sign in with your own account and authorize the requested permissions.</li><li>Ask your assistant to check your workspace before saving information.</li></ol>
-            <p class="connection-note">Other clients need compatible MCP and OAuth support. Claude and Gemini have not yet passed Datavyx’s end-to-end connection verification. If setup cannot complete, contact us with the error message.</p>
+            <ol class="connection-steps">
+              <li>In ChatGPT, open <strong>Plugins</strong>, select <strong>＋</strong>, then <strong>Add custom MCP server</strong>. Name it Datavyx and paste the URL above.</li>
+              <li>Select OAuth, review the setup prompt and create the connection. Sign in on the authorization page and grant access. If your client offers automatic registration, select it so the client can obtain its own Client ID.</li>
+              <li>Enable Datavyx in your chat and try the prompts below. The first authorized request creates a personal workspace for a new user without an existing workspace.</li>
+            </ol>
+            <div class="starter-prompts" aria-labelledby="starter-prompts-title">
+              <h4 id="starter-prompts-title">Try your first save and recall</h4>
+              <ol>
+                <li><div><strong>Save in your current chat</strong><p id="cedar-save-prompt">Save this project note: Project Cedar’s approved budget is 15,000 USD.</p></div><button type="button" class="prompt-copy" data-copy-prompt="cedar-save-prompt" hidden>Copy save prompt</button></li>
+                <li><div><strong>Ask in a new chat with Datavyx enabled</strong><p id="cedar-recall-prompt">What’s the approved budget for Project Cedar? Show the original note.</p></div><button type="button" class="prompt-copy" data-copy-prompt="cedar-recall-prompt" hidden>Copy recall prompt</button></li>
+              </ol>
+              <p id="prompt-copy-status" class="prompt-copy-status" role="status" aria-live="polite"></p>
+            </div>
+            <p class="connection-note">If authorization was canceled, reopen the connection and try again. If you can’t find <strong>Add custom MCP server</strong>, check your plan or ask your workspace admin.</p>
           </div>
         </div>
       </section>
@@ -132,7 +156,7 @@
         <div class="container faq-layout">
           <div class="section-heading"><p class="eyebrow eyebrow-dark">A few practical details</p><h2>Before you connect.</h2><p>What gets saved, how access works, and what happens when information changes.</p></div>
           <div class="faq-list">
-            <details><summary>Where do I use Datavyx?</summary><p>In an AI assistant with a supported, authorized MCP connection. ChatGPT is verified in production. Other clients must be checked for protocol, OAuth, and account availability.</p></details>
+            <details><summary>Where do I use Datavyx?</summary><p>ChatGPT on the web is verified with the production server. See the <a href="#connect">connection guide</a> for plan and workspace requirements. Other clients need remote MCP and OAuth support.</p></details>
             <details><summary>Is everything in my chat saved automatically?</summary><p>No. Your assistant sends the specific information and sources needed for a tool request. Datavyx does not receive your complete chat history automatically. Ask your assistant to save what you want to keep.</p></details>
             <details><summary>Can another user see my personal records?</summary><p>Connecting to the same server does not grant access to your personal workspace. Every operation checks the authenticated identity, granted permissions, and current workspace membership.</p></details>
             <details><summary>What happens when two sources disagree?</summary><p>Independent conflicting statements retain their sources. Datavyx does not choose a winner just because one arrived later. Relevant exact calculations exclude conflicting values; an explicit correction preserves the previous value and its history.</p></details>

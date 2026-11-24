@@ -34,11 +34,30 @@ if (copyButton && endpoint && copyStatus) {
   copyButton.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(endpoint.value);
-      copyStatus.textContent = 'Server URL copied.';
+      copyStatus.textContent = 'Server URL copied. Paste it into your client’s MCP settings.';
     } catch {
       endpoint.focus();
       endpoint.select();
       copyStatus.textContent = 'Could not copy automatically. The address is selected; copy it manually.';
     }
+  });
+}
+
+const promptCopyStatus = document.querySelector('#prompt-copy-status');
+
+if (promptCopyStatus) {
+  document.querySelectorAll('[data-copy-prompt]').forEach((button) => {
+    const prompt = document.getElementById(button.dataset.copyPrompt);
+    if (!prompt) return;
+
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(prompt.textContent);
+        promptCopyStatus.textContent = 'Prompt copied. Paste it into your chat.';
+      } catch {
+        promptCopyStatus.textContent = 'Could not copy automatically. Select the prompt text and copy it manually.';
+      }
+    });
   });
 }
