@@ -30,17 +30,31 @@ const copyStatus = document.querySelector('#copy-status');
 
 if (copyButton && endpoint && copyStatus) {
   copyButton.hidden = false;
-  copyStatus.textContent = 'Copy this address into your client’s MCP settings.';
+  copyStatus.textContent = '';
   copyButton.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(endpoint.value);
-      copyStatus.textContent = 'Server URL copied. Paste it into your client’s MCP settings.';
+      copyStatus.textContent = 'Copied';
     } catch {
       endpoint.focus();
       endpoint.select();
-      copyStatus.textContent = 'Could not copy automatically. The address is selected; copy it manually.';
+      copyStatus.textContent = 'Copy unavailable. Copy the selected URL manually.';
     }
   });
+}
+
+const setupFrame = document.querySelector('.setup-frame');
+
+if (setupFrame && 'ResizeObserver' in window) {
+  const walkthrough = setupFrame.querySelector('iframe');
+  const fitWalkthrough = () => {
+    const scale = Math.min(1, setupFrame.clientWidth / walkthrough.offsetWidth);
+    setupFrame.style.setProperty('--setup-scale', String(scale));
+  };
+
+  setupFrame.setAttribute('data-fitted', '');
+  fitWalkthrough();
+  new ResizeObserver(fitWalkthrough).observe(setupFrame);
 }
 
 const promptCopyStatus = document.querySelector('#prompt-copy-status');

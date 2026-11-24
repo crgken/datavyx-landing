@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datavyx 1:1 ChatGPT MCP Setup Walkthrough</title>
+  <style>
+    .dvx-walkthrough {
+      --bg-dark: #07131d;
+      --mint: #5de4c7;
+      --mint-text: #06181c;
+      --border-dark: rgba(255, 255, 255, 0.1);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      font-family: var(--font-sans);
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      box-shadow: 0 28px 70px rgba(4, 12, 20, 0.32);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* 顶部极简控制栏 */
+    .dvx-wt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 20px;
+      background: #050e16;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .dvx-wt-dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .dvx-wt-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .dvx-wt-steps {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .dvx-wt-step-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #8fa3b8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dvx-wt-step-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .dvx-wt-step-btn.active {
+      color: var(--mint);
+      background: rgba(93, 228, 199, 0.14);
+      border-color: rgba(93, 228, 199, 0.35);
+    }
+
+    .dvx-wt-progress {
+      height: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      width: 100%;
+    }
+
+    .dvx-wt-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--mint);
+    }
+
+    /* 主视口 */
+    .dvx-wt-viewport {
+      position: relative;
+      height: 620px;
+      overflow: hidden;
+      background: #07131d;
+    }
+
+    .dvx-wt-canvas {
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+    }
+
+    /* 模拟鼠标指针（尖端位于左上角 (5.5, 3.2)） */
+    .dvx-cursor-pointer {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      z-index: 60;
+      pointer-events: none;
+      margin-left: -5px;
+      margin-top: -3px;
+      transition: left 0.65s cubic-bezier(0.22, 1, 0.36, 1), top 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+    }
+
+    .dvx-click-ring {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--mint);
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 59;
+    }
+
+    .dvx-click-ring.animate {
+      animation: dvxRipple 0.55s ease-out forwards;
+    }
+
+    @keyframes dvxRipple {
+      0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.3); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.65); }
+    }
+
+    .dvx-view {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .dvx-view.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ============================
+       场景 1: Datavyx 复制 MCP URL
+       ============================ */
+    .view-datavyx {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 44px;
+      padding: 60px 64px;
+      background: #07131d;
+      color: #f4f7fa;
+    }
+
+    .dvx-col-left {
+      flex: 1;
+    }
+
+    .dvx-h2 {
+      font-size: 36px;
+      line-height: 1.12;
+      font-weight: 700;
+      margin: 0 0 14px 0;
+    }
+
+    .dvx-sub {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #9cb0c4;
+      margin: 0;
+    }
+
+    .dvx-sub span {
+      color: var(--mint);
+    }
+
+    .dvx-col-right {
+      flex: 1.15;
+      background: #0d1f2f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 26px;
+    }
+
+    .dvx-url-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #061019;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      padding: 9px 9px 9px 14px;
+      margin-top: 8px;
+    }
+
+    .dvx-url-code {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      color: #e6eef6;
+    }
+
+    .dvx-btn-copy {
+      background: var(--mint);
+      color: var(--mint-text);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .dvx-btn-copy.copied {
+      background: #34d399;
+      transform: scale(0.96);
+    }
+
+    .dvx-example-prompts {
+      margin: 14px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mint);
+    }
+
+    /* ============================
+       场景 2 & 3: ChatGPT 1:1 原生界面
+       ============================ */
+    .view-chatgpt {
+      display: flex;
+      height: 100%;
+      background: #ffffff;
+      color: #0d0d0d;
+    }
+
+    .gpt-sidebar {
+      width: 215px;
+      background: #f9f9f9;
+      border-right: 1px solid #ececec;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 13.5px;
+    }
+
+    .gpt-sidebar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 10px 14px;
+    }
+
+    .gpt-brand {
+      font-weight: 600;
+      font-size: 15px;
+      color: #0d0d0d;
+      letter-spacing: -0.01em;
+    }
+
+    .gpt-sidebar-icons {
+      display: flex;
+      gap: 10px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .gpt-nav-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #1f2328;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gpt-nav-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      flex-shrink: 0;
+    }
+
+    .gpt-nav-item.active {
+      background: #ececec;
+      font-weight: 500;
+    }
+
+    .gpt-nav-item.pulse-focus {
+      box-shadow: 0 0 0 2px #111827;
+    }
+
+    .gpt-main {
+      flex: 1;
+      padding: 18px 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gpt-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .gpt-add-wrapper {
+      position: relative;
+    }
+
+    .gpt-add-btn {
+      background: #0d0d0d;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .gpt-dropdown {
+      position: absolute;
+      right: 0;
+      top: 34px;
+      width: 182px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      padding: 5px;
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: all 0.2s ease;
+    }
+
+    .gpt-dropdown.open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gpt-drop-item {
+      padding: 7px 10px;
+      font-size: 12.5px;
+      border-radius: 6px;
+      color: #374151;
+    }
+
+    .gpt-drop-item.highlight {
+      background: #f3f4f6;
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+
+    .gpt-plugins-hero {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .gpt-plugins-hero h3 {
+      font-size: 24px;
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+
+    .gpt-plugins-hero p {
+      font-size: 13.5px;
+      color: #6b7280;
+      margin: 0 0 18px;
+    }
+
+    .gpt-search-bar {
+      max-width: 380px;
+      margin: 0 auto 28px;
+      padding: 9px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: #9ca3af;
+      text-align: left;
+    }
+
+    .gpt-grid-mock {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .gpt-plugin-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+    }
+
+    /* ============================
+       1:1 复刻 Add custom MCP server 弹窗
+       ============================ */
+    .gpt-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.34);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .gpt-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gpt-modal {
+      width: 440px;
+      max-height: 585px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+      color: #0d0d0d;
+      overflow: hidden;
+    }
+
+    .gpt-modal-title {
+      font-size: 15.5px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gpt-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .gpt-icon-upload {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #374151;
+      flex-shrink: 0;
+    }
+
+    .gpt-icon-meta-title {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .gpt-icon-meta-sub {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 1px;
+    }
+
+    .gpt-field {
+      margin-bottom: 9px;
+    }
+
+    .gpt-field-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .gpt-seg-control {
+      display: inline-flex;
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 2px;
+      font-size: 10px;
+    }
+
+    .gpt-seg-item {
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #6b7280;
+    }
+
+    .gpt-seg-item.active {
+      background: #ffffff;
+      color: #111827;
+      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .gpt-validated-badge {
+      color: #059669;
+      background: #ecfdf5;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 6px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .gpt-validated-badge.show {
+      opacity: 1;
+    }
+
+    .gpt-input-box {
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 12px;
+      min-height: 16px;
+      color: #111827;
+      background: #fff;
+      display: flex;
+      align-items: center;
+    }
+
+    .gpt-input-box.placeholder {
+      color: #9ca3af;
+    }
+
+    .gpt-input-box.mono {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+    }
+
+    .gpt-input-box.focused {
+      border-color: #111827;
+      box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1);
+    }
+
+    .gpt-adv-box {
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #9ca3af;
+    }
+
+    .gpt-adv-title {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .gpt-adv-desc {
+      font-size: 9.5px;
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+
+    .gpt-risk-banner {
+      border: 1px solid #e7d3c8;
+      background: #fdf8f6;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+
+    .gpt-consent-box {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .gpt-consent-box.checked-box {
+      border-color: #111827;
+      background: #fafafa;
+    }
+
+    .gpt-checkbox {
+      width: 14px;
+      height: 14px;
+      margin-top: 2px;
+      border: 1.5px solid #9ca3af;
+      border-radius: 3.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .gpt-checkbox.checked {
+      background: #111827;
+      border-color: #111827;
+    }
+
+    .gpt-consent-title {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .gpt-consent-desc {
+      font-size: 9.5px;
+      color: #6b7280;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .gpt-modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gpt-read-guide {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #111827;
+      text-decoration: underline;
+    }
+
+    .gpt-footer-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .gpt-btn-cancel {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      color: #111827;
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+
+    .gpt-btn-create {
+      background: #9ca3af;
+      border: none;
+      color: #fff;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 11.5px;
+      font-weight: 500;
+      transition: transform 0.15s ease, background 0.25s ease;
+    }
+
+    .gpt-btn-create.enabled {
+      background: #0d0d0d;
+    }
+
+    .gpt-btn-create.done {
+      background: #059669;
+      transform: scale(0.97);
+    }
+
+    /* 底部提示条 */
+    .dvx-wt-footer {
+      padding: 12px 20px;
+      background: #050e16;
+      border-top: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #8fa3b8;
+    }
+
+    .dvx-wt-toggle {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="dvx-walkthrough" id="dvxWalkthrough">
+  <div class="dvx-wt-header">
+    <div class="dvx-wt-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="dvx-wt-steps">
+      <button class="dvx-wt-step-btn active" data-step="0">1. Copy MCP URL</button>
+      <button class="dvx-wt-step-btn" data-step="1">2. Open ChatGPT Plugins</button>
+      <button class="dvx-wt-step-btn" data-step="2">3. Add Custom MCP Server</button>
+    </div>
+  </div>
+
+  <div class="dvx-wt-progress">
+    <div class="dvx-wt-progress-fill" id="dvxWtProgress"></div>
+  </div>
+
+  <div class="dvx-wt-viewport">
+    <div class="dvx-wt-canvas" id="dvxWtCanvas">
+      <!-- 模拟鼠标指针 -->
+      <svg class="dvx-cursor-pointer" id="dvxCursor" viewBox="0 0 24 24" style="left: 50%; top: 50%;">
+        <path fill="#ffffff" stroke="#0a1622" stroke-width="1.6" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.53.35-.85L6.35 2.86a.5.5 0 0 0-.85.35Z"/>
+      </svg>
+      <div class="dvx-click-ring" id="dvxClickRing"></div>
+
+      <!-- 视图 1: Datavyx 复制链接 -->
+      <div class="dvx-view view-datavyx active" data-view="0">
+        <div class="dvx-col-left">
+          <h2 class="dvx-h2">Connect Datavyx</h2>
+          <p class="dvx-sub">ChatGPT on the web · <span>Check plan and write access</span></p>
+        </div>
+        <div class="dvx-col-right">
+          <div style="font-size: 11px; color: #8fa3b8;">MCP server URL</div>
+          <div class="dvx-url-box">
+            <span class="dvx-url-code">https://kb.datavyx.com/mcp</span>
+            <button class="dvx-btn-copy" id="wtCopyBtn">Copy URL</button>
+          </div>
+          <p class="dvx-example-prompts">Try example prompts</p>
+        </div>
+      </div>
+
+      <!-- 视图 2: 1:1 复刻 ChatGPT 网页版原生 UI -->
+      <div class="dvx-view view-chatgpt" data-view="1">
+        <div class="gpt-sidebar">
+          <div class="gpt-sidebar-top">
+            <span class="gpt-brand">ChatGPT</span>
+            <div class="gpt-sidebar-icons">
+              <span>⌕</span><span>◫</span>
+            </div>
+          </div>
+          <div class="gpt-nav-item"><span class="gpt-nav-icon">✎</span>New chat</div>
+          <div class="gpt-nav-item"><span class="gpt-nav-icon">🖼</span>Images</div>
+          <div class="gpt-nav-item"><span class="gpt-nav-icon">📅</span>Scheduled</div>
+          <div class="gpt-nav-item"><span class="gpt-nav-icon">📚</span>Library</div>
+          <div class="gpt-nav-item active" id="gptNavPlugins"><span class="gpt-nav-icon">@</span>Plugins</div>
+          <div class="gpt-nav-item"><span class="gpt-nav-icon">⊞</span>Explore</div>
+        </div>
+
+        <div class="gpt-main">
+          <div class="gpt-topbar">
+            <span style="font-size: 14px; font-weight: 600;">Plugins</span>
+            <div class="gpt-add-wrapper">
+              <button class="gpt-add-btn" id="gptAddBtn">Add ▾</button>
+              <div class="gpt-dropdown" id="gptDropdown">
+                <div class="gpt-drop-item">Create plugin</div>
+                <div class="gpt-drop-item">Upload plugin (.zip)</div>
+                <div class="gpt-drop-item highlight" id="gptDropCustom">Add custom MCP server</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gpt-plugins-hero">
+            <h3>Plugins</h3>
+            <p>Connect tools to let ChatGPT work across your knowledge</p>
+            <div class="gpt-search-bar">⌕ Search plugins</div>
+            <div class="gpt-grid-mock">
+              <div class="gpt-plugin-card"><span><strong>Gmail</strong> · Search & draft</span><span>+</span></div>
+              <div class="gpt-plugin-card"><span><strong>Google Drive</strong> · Docs, Sheets</span><span>+</span></div>
+              <div class="gpt-plugin-card"><span><strong>Google Calendar</strong> · Events</span><span>+</span></div>
+              <div class="gpt-plugin-card"><span><strong>GitHub</strong> · Repos & PRs</span><span>+</span></div>
+            </div>
+          </div>
+
+          <!-- 1:1 复刻原生 Add custom MCP server 弹窗 -->
+          <div class="gpt-modal-backdrop" id="gptModalBackdrop">
+            <div class="gpt-modal">
+              <div class="gpt-modal-title">
+                <span>Add custom MCP server</span>
+                <span style="color: #6b7280; font-weight: 400; font-size: 14px;">✕</span>
+              </div>
+
+              <div class="gpt-icon-row">
+                <div class="gpt-icon-upload">+</div>
+                <div>
+                  <div class="gpt-icon-meta-title">Icon (optional)</div>
+                  <div class="gpt-icon-meta-sub">PNG only. Best results at 256 x 256 px or larger. Max file size: 10 KB</div>
+                </div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-field-header"><span>Name</span></div>
+                <div class="gpt-input-box placeholder" id="gptFieldName">Custom Tool</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-field-header"><span>Description (optional)</span></div>
+                <div class="gpt-input-box placeholder">Explain what it does in a few words</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-field-header">
+                  <div>
+                    <span>Connection</span>
+                    <span class="gpt-validated-badge" id="gptValidated">✓ Validated</span>
+                  </div>
+                  <div class="gpt-seg-control">
+                    <span class="gpt-seg-item active">Server URL</span>
+                    <span class="gpt-seg-item">Tunnel</span>
+                  </div>
+                </div>
+                <div class="gpt-input-box mono placeholder" id="gptFieldUrl">https://example.com/mcp</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-field-header"><span>Authentication</span></div>
+                <div class="gpt-input-box" style="color: #111827;">OAuth</div>
+              </div>
+
+              <div class="gpt-adv-box">
+                <div>
+                  <div class="gpt-adv-title">Advanced OAuth settings</div>
+                  <div class="gpt-adv-desc">Review discovered OAuth settings, or enter them manually, then choose a client setup method and configure default scopes</div>
+                </div>
+                <span style="font-size: 13px;">›</span>
+              </div>
+
+              <div class="gpt-risk-banner">
+                <span style="color: #9a3412;">⚠</span>
+                <span>Custom MCP servers introduce risk. <u style="color: #111827;">Learn more</u></span>
+              </div>
+
+              <div class="gpt-consent-box" id="gptConsentBox">
+                <span class="gpt-checkbox" id="gptCheckbox">✓</span>
+                <div>
+                  <div class="gpt-consent-title">I understand and want to continue</div>
+                  <div class="gpt-consent-desc">
+                    Only connect to MCP servers you trust. An untrusted server may access or steal information shared through app use, or trick ChatGPT into using tools in unintended ways, including changing or deleting data.
+                  </div>
+                </div>
+              </div>
+
+              <div class="gpt-modal-footer">
+                <span class="gpt-read-guide">Read the guide</span>
+                <div class="gpt-footer-btns">
+                  <button class="gpt-btn-cancel">Cancel</button>
+                  <button class="gpt-btn-create" id="gptBtnCreate">Create as a plugin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dvx-wt-footer">
+    <span id="dvxWtCaption">Step 1 of 3 · Copy the Datavyx MCP URL</span>
+    <button class="dvx-wt-toggle" id="dvxWtPlayBtn">Pause</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const STEP_DURATIONS = [4200, 5800, 8600];
+    let step = 0;
+    let playing = true;
+    let elapsed = 0;
+    let lastTime = performance.now();
+    let timers = [];
+
+    const canvas = document.getElementById("dvxWtCanvas");
+    const cursor = document.getElementById("dvxCursor");
+    const ring = document.getElementById("dvxClickRing");
+    const progress = document.getElementById("dvxWtProgress");
+    const caption = document.getElementById("dvxWtCaption");
+    const stepBtns = document.querySelectorAll(".dvx-wt-step-btn");
+    const views = document.querySelectorAll(".dvx-view");
+
+    function clearTimers() {
+      timers.forEach((t) => clearTimeout(t));
+      timers = [];
+    }
+
+    /**
+     * 核心修复：实时读取目标 DOM 元素在未缩放画布坐标系下的精确中心点
+     * 彻底消除不同屏幕宽度或缩放下的鼠标偏移问题
+     */
+    function getElementPosInCanvas(targetEl, offsetXRatio = 0.5, offsetYRatio = 0.5) {
+      const prevTransform = canvas.style.transform;
+      canvas.style.transition = "none";
+      canvas.style.transform = "scale(1)";
+
+      const canvasRect = canvas.getBoundingClientRect();
+      const elRect = targetEl.getBoundingClientRect();
+
+      canvas.style.transform = prevTransform;
+      void canvas.offsetWidth;
+      canvas.style.transition = "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)";
+
+      const x = elRect.left - canvasRect.left + elRect.width * offsetXRatio;
+      const y = elRect.top - canvasRect.top + elRect.height * offsetYRatio;
+      return { x, y };
+    }
+
+    function moveCursorToEl(targetEl, clickAfterMs, offsetXRatio = 0.5, offsetYRatio = 0.5) {
+      const pos = getElementPosInCanvas(targetEl, offsetXRatio, offsetYRatio);
+      cursor.style.left = pos.x + "px";
+      cursor.style.top = pos.y + "px";
+
+      if (clickAfterMs !== undefined) {
+        timers.push(
+          setTimeout(() => {
+            ring.style.left = pos.x + "px";
+            ring.style.top = pos.y + "px";
+            ring.classList.remove("animate");
+            void ring.offsetWidth;
+            ring.classList.add("animate");
+          }, clickAfterMs)
+        );
+      }
+    }
+
+    function zoomToEl(scale, targetEl) {
+      if (!targetEl || scale === 1) {
+        canvas.style.transformOrigin = "50% 50%";
+        canvas.style.transform = "scale(1)";
+        return;
+      }
+      const pos = getElementPosInCanvas(targetEl, 0.5, 0.5);
+      canvas.style.transformOrigin = `${pos.x}px ${pos.y}px`;
+      canvas.style.transform = `scale(${scale})`;
+    }
+
+    function typeInto(el, text, speed, cb) {
+      el.textContent = "";
+      el.classList.remove("placeholder");
+      el.classList.add("focused");
+      let i = 0;
+      function tick() {
+        if (i < text.length) {
+          el.textContent += text.charAt(i++);
+          timers.push(setTimeout(tick, speed));
+        } else {
+          el.classList.remove("focused");
+          if (cb) cb();
+        }
+      }
+      tick();
+    }
+
+    function playStep(s) {
+      clearTimers();
+      step = s;
+      elapsed = 0;
+      progress.style.width = "0%";
+      stepBtns.forEach((b, idx) => b.classList.toggle("active", idx === s));
+
+      if (s === 0) {
+        views[0].classList.add("active");
+        views[1].classList.remove("active");
+        caption.textContent = "Step 1 of 3 · Copy https://kb.datavyx.com/mcp";
+
+        const copyBtn = document.getElementById("wtCopyBtn");
+        copyBtn.textContent = "Copy URL";
+        copyBtn.classList.remove("copied");
+
+        zoomToEl(1, null);
+        // 初始位置停在右侧面板中央偏左
+        moveCursorToEl(document.querySelector(".dvx-url-code"));
+
+        timers.push(
+          setTimeout(() => {
+            zoomToEl(1.08, copyBtn);
+            moveCursorToEl(copyBtn, 650, 0.5, 0.5);
+          }, 550)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            copyBtn.textContent = "Copied ✓";
+            copyBtn.classList.add("copied");
+          }, 1250)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            zoomToEl(1, null);
+          }, 3000)
+        );
+      }
+
+      if (s === 1) {
+        views[0].classList.remove("active");
+        views[1].classList.add("active");
+        caption.textContent = "Step 2 of 3 · Open Plugins in the left sidebar → click Add → Add custom MCP server";
+
+        const navPlugins = document.getElementById("gptNavPlugins");
+        const addBtn = document.getElementById("gptAddBtn");
+        const dropdown = document.getElementById("gptDropdown");
+        const dropCustom = document.getElementById("gptDropCustom");
+        const modal = document.getElementById("gptModalBackdrop");
+
+        dropdown.classList.remove("open");
+        modal.classList.remove("open");
+        navPlugins.classList.add("pulse-focus");
+
+        // 精准锁定左侧 Plugins 项中心并停顿 1.8 秒
+        zoomToEl(1.22, navPlugins);
+        moveCursorToEl(navPlugins, 450, 0.45, 0.5);
+
+        // 精准移向右上角 Add 按钮中心
+        timers.push(
+          setTimeout(() => {
+            navPlugins.classList.remove("pulse-focus");
+            zoomToEl(1.22, addBtn);
+            moveCursorToEl(addBtn, 750, 0.5, 0.5);
+          }, 1800)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            dropdown.classList.add("open");
+          }, 2650)
+        );
+
+        // 精准锁定下拉菜单中的 Add custom MCP server 中心
+        timers.push(
+          setTimeout(() => {
+            moveCursorToEl(dropCustom, 600, 0.5, 0.5);
+          }, 3250)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            dropdown.classList.remove("open");
+            zoomToEl(1, null);
+            modal.classList.add("open");
+          }, 4150)
+        );
+      }
+
+      if (s === 2) {
+        views[0].classList.remove("active");
+        views[1].classList.add("active");
+        caption.textContent = "Step 3 of 3 · Enter Name, paste Server URL under Connection, check consent & create";
+
+        const modal = document.getElementById("gptModalBackdrop");
+        const fieldName = document.getElementById("gptFieldName");
+        const fieldUrl = document.getElementById("gptFieldUrl");
+        const validated = document.getElementById("gptValidated");
+        const consentBox = document.getElementById("gptConsentBox");
+        const checkbox = document.getElementById("gptCheckbox");
+        const btnCreate = document.getElementById("gptBtnCreate");
+
+        modal.classList.add("open");
+        fieldName.textContent = "Custom Tool";
+        fieldName.classList.add("placeholder");
+        fieldUrl.textContent = "https://example.com/mcp";
+        fieldUrl.classList.add("placeholder");
+        validated.classList.remove("show");
+        consentBox.classList.remove("checked-box");
+        checkbox.classList.remove("checked");
+        btnCreate.textContent = "Create as a plugin";
+        btnCreate.classList.remove("enabled", "done");
+
+        // 精准指向 Name 输入框中心
+        zoomToEl(1.06, fieldName);
+        moveCursorToEl(fieldName, 300, 0.35, 0.5);
+
+        timers.push(
+          setTimeout(() => {
+            typeInto(fieldName, "Datavyx", 45, () => {
+              // 精准指向 Connection 输入框中心并放大局部
+              zoomToEl(1.16, fieldUrl);
+              moveCursorToEl(fieldUrl, 350, 0.4, 0.5);
+
+              timers.push(
+                setTimeout(() => {
+                  fieldUrl.classList.remove("placeholder");
+                  fieldUrl.classList.add("focused");
+                  fieldUrl.textContent = "https://kb.datavyx.com/mcp";
+                  validated.classList.add("show");
+                  caption.textContent = "Paste https://kb.datavyx.com/mcp into Connection (Server URL) → Validated ✓";
+
+                  // 停顿 2.0 秒让用户看清楚链接位置
+                  timers.push(
+                    setTimeout(() => {
+                      fieldUrl.classList.remove("focused");
+                      zoomToEl(1.05, consentBox);
+                      caption.textContent = "Check 'I understand and want to continue' and click Create as a plugin";
+
+                      // 精准指向 14x14 复选框正中心！
+                      moveCursorToEl(checkbox, 650, 0.5, 0.5);
+                      timers.push(
+                        setTimeout(() => {
+                          checkbox.classList.add("checked");
+                          consentBox.classList.add("checked-box");
+                          btnCreate.classList.add("enabled");
+
+                          // 精准指向 Create as a plugin 按钮正中心！
+                          moveCursorToEl(btnCreate, 650, 0.5, 0.5);
+                          timers.push(
+                            setTimeout(() => {
+                              btnCreate.textContent = "Plugin Created ✓";
+                              btnCreate.classList.add("done");
+                              zoomToEl(1, null);
+                            }, 700)
+                          );
+                        }, 700)
+                      );
+                    }, 2000)
+                  );
+                }, 450)
+              );
+            });
+          }, 500)
+        );
+      }
+    }
+
+    stepBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        playStep(Number(btn.dataset.step));
+      });
+    });
+
+    document.getElementById("dvxWtPlayBtn").addEventListener("click", function () {
+      playing = !playing;
+      this.textContent = playing ? "Pause" : "Play";
+      lastTime = performance.now();
+    });
+
+    function tick(now) {
+      const dt = now - lastTime;
+      lastTime = now;
+
+      if (playing) {
+        elapsed += dt;
+        const dur = STEP_DURATIONS[step];
+        progress.style.width = Math.min((elapsed / dur) * 100, 100) + "%";
+        if (elapsed >= dur) {
+          playStep((step + 1) % STEP_DURATIONS.length);
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // 等待字体与布局完全渲染后再启动首帧测算
+    requestAnimationFrame(() => {
+      playStep(0);
+      requestAnimationFrame(tick);
+    });
+  })();
+</script>
+
+</body>
+</html>

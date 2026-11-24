@@ -67,7 +67,7 @@
     let name;
     if (target.id === 'copy-mcp') name = 'copy_mcp_clicked';
     else if (target.matches('a[href="#connect"]')) name = 'connection_guide_clicked';
-    else if (target.matches('.text-link[href^="mailto:"]')) name = 'connection_help_clicked';
+    else if (target.matches('.cta-action a[href^="mailto:"]')) name = 'connection_help_clicked';
     if (name) window.clarity('event', name);
   });
 
