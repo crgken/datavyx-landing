@@ -56,22 +56,3 @@ if (setupFrame && 'ResizeObserver' in window) {
   fitWalkthrough();
   new ResizeObserver(fitWalkthrough).observe(setupFrame);
 }
-
-const promptCopyStatus = document.querySelector('#prompt-copy-status');
-
-if (promptCopyStatus) {
-  document.querySelectorAll('[data-copy-prompt]').forEach((button) => {
-    const prompt = document.getElementById(button.dataset.copyPrompt);
-    if (!prompt) return;
-
-    button.hidden = false;
-    button.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(prompt.textContent);
-        promptCopyStatus.textContent = 'Prompt copied. Paste it into your chat.';
-      } catch {
-        promptCopyStatus.textContent = 'Could not copy automatically. Select the prompt text and copy it manually.';
-      }
-    });
-  });
-}

@@ -128,7 +128,6 @@ section[id] { scroll-margin-top: 24px; }
   grid-template:
     ". walkthrough" 1fr
     "copy walkthrough" auto
-    "examples walkthrough" auto
     ". walkthrough" 1fr
     / minmax(0, 360px) minmax(0, 620px);
   justify-content: center;
@@ -150,18 +149,6 @@ section[id] { scroll-margin-top: 24px; }
 .setup-frame iframe { display: block; width: 100%; min-width: var(--setup-width); height: var(--setup-height); border: 0; transform: scale(var(--setup-scale, 1)); transform-origin: top left; }
 .setup-frame[data-fitted] { overflow: hidden; }
 .setup-embed > a { display: inline-block; color: var(--cyan); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
-.starter-prompts summary::marker { color: var(--cyan); }
-.starter-prompts { grid-area: examples; margin-top: 8px; }
-.starter-prompts summary { width: fit-content; padding: 11px 0; color: var(--cyan); cursor: pointer; font-size: 14px; font-weight: 600; }
-.starter-prompts ol { margin: 8px 0 0; padding: 14px; border: 1px solid #36515c; border-radius: 5px; background: #0d2130; list-style: none; }
-.starter-prompts li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 14px; }
-.starter-prompts li + li { margin-top: 12px; padding-top: 12px; border-top: 1px solid #36515c; }
-.starter-prompts li > div { flex: 1 1 215px; }
-.starter-prompts li p { margin: 4px 0 0; color: #b3c8cd; }
-.prompt-copy { min-height: 44px; padding: 6px 10px; border: 1px solid #567480; border-radius: 4px; color: var(--cyan); background: transparent; cursor: pointer; font: inherit; }
-.prompt-copy:hover { background: #16364a; }
-.prompt-copy-status { margin: 10px 0 0; color: #b3c8cd; font-size: 13px; }
-.prompt-copy-status:empty { margin: 0; }
 .pricing-section { padding: clamp(64px, 8vw, 104px) 0; }
 .pricing-grid {
   display: grid;
@@ -201,10 +188,9 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 
 @media (max-width: 900px) {
   .connect-layout {
-    grid-template: "copy" "walkthrough" "examples" / minmax(0, 620px);
+    grid-template: "copy" "walkthrough" / minmax(0, 620px);
     row-gap: 20px;
   }
-  .starter-prompts { margin-top: 0; }
 }
 
 @media (max-width: 700px) {
