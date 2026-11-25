@@ -148,7 +148,6 @@ section[id] { scroll-margin-top: 24px; }
 .setup-frame { --setup-width: 800px; --setup-height: 820px; height: calc(var(--setup-height) * var(--setup-scale, 1)); overflow: auto; }
 .setup-frame iframe { display: block; width: 100%; min-width: var(--setup-width); height: var(--setup-height); border: 0; transform: scale(var(--setup-scale, 1)); transform-origin: top left; }
 .setup-frame[data-fitted] { overflow: hidden; }
-.setup-embed > a { display: inline-block; color: var(--cyan); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 .pricing-section { padding: clamp(64px, 8vw, 104px) 0; }
 .pricing-grid {
   display: grid;
