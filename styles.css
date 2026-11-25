@@ -170,13 +170,15 @@ section[id] { scroll-margin-top: 24px; }
 .pricing-card ul { margin: 0; padding-inline-start: 20px; }
 .pricing-card li + li { margin-top: 5px; }
 .pricing-card li::marker { color: #237e70; }
-.pricing-card-unavailable { color: #5d6670; background: #e7e9ec; border-color: #cbd0d6; }
+.pricing-card-unavailable { color: #c1c7ce; background: #30363d; border-color: #59636e; }
 .pricing-card-unavailable .plan-price span { color: inherit; }
-.pricing-card-unavailable li::marker { color: #707985; }
+.pricing-card-unavailable li::marker { color: #a5afb9; }
+.pricing-card-unavailable .plan-benefits-label { border-color: #59636e; }
+.pricing-card-unavailable .plan-badge { background: #1b222a; }
 .plan-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; margin-bottom: 12px; }
 .plan-heading h3 { margin: 0; }
 .plan-badge { max-width: 100%; padding: 6px 10px; border-radius: 4px; color: #fff; background: #49525b; font: 700 11px/1.4 var(--body); letter-spacing: .04em; overflow-wrap: anywhere; }
-.plan-status-pending { color: #4b5563; font-weight: 700; }
+.plan-status-pending { color: #d5dbe1; font-weight: 700; }
 .process-section.section-dark .eyebrow-dark, .process-section.section-dark .step-no { color: var(--cyan); }
 .process-section.section-dark .process-step p { color: #b3c8cd; }
 .process-section.section-dark .step-line { background: #36515c; }
