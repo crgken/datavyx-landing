@@ -272,8 +272,8 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 .demo-front { z-index: 3; top: 21px; background: linear-gradient(150deg, #79e4d0, #278c7b); transform-origin: bottom center; }
 .demo-paper { position: absolute; top: 0; left: 0; z-index: 2; width: 30px; height: 38px; border: 1.5px solid #62b8a9; border-radius: 6px; background: #effbf8; box-shadow: 0 5px 12px #0003; opacity: 0; pointer-events: none; }
 .demo-paper::after { content: ""; position: absolute; inset: 10px 6px auto; height: 2px; border-radius: 2px; background: #278c7b; box-shadow: 0 6px #62b8a9, 0 12px #b6e1d8; }
-.demo-results { position: absolute; top: 0; left: 0; z-index: 4; display: grid; grid-template-columns: repeat(2, 28px); gap: 4px; width: 60px; height: 70px; opacity: 0; pointer-events: none; }
-.demo-result-icon { display: grid; place-items: center; width: 28px; height: 33px; border: 1px solid #62b8a9; border-radius: 5px; color: #237e70; background: #effbf8; box-shadow: 0 3px 8px #0003; }
+.demo-results { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.demo-result-icon { position: absolute; top: 0; left: 0; display: grid; place-items: center; width: 28px; height: 33px; border: 1px solid #62b8a9; border-radius: 5px; color: #237e70; background: #effbf8; box-shadow: 0 3px 8px #0003; opacity: 0; }
 .demo-result-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .demo-chart-slice { fill: #b6e1d8; }
 .demo-result-number { font: 700 12px/1 var(--display); letter-spacing: -.04em; }
