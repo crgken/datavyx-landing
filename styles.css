@@ -155,6 +155,7 @@ section[id] { scroll-margin-top: 24px; }
   margin-top: 32px;
 }
 .pricing-card {
+  color: var(--ink);
   padding: clamp(20px, 3vw, 32px);
   border: 1px solid var(--line);
   border-radius: 7px;
@@ -176,6 +177,12 @@ section[id] { scroll-margin-top: 24px; }
 .plan-heading h3 { margin: 0; }
 .plan-badge { max-width: 100%; padding: 6px 10px; border-radius: 4px; color: #fff; background: #49525b; font: 700 11px/1.4 var(--body); letter-spacing: .04em; overflow-wrap: anywhere; }
 .plan-status-pending { color: #4b5563; font-weight: 700; }
+.process-section.section-dark .eyebrow-dark, .process-section.section-dark .step-no { color: var(--cyan); }
+.process-section.section-dark .process-step p { color: #b3c8cd; }
+.process-section.section-dark .step-line { background: #36515c; }
+.process-section.section-dark .process-step:not(:last-child) .step-line::after { background: var(--cyan); }
+.connect-section.section-light .connection-requirements, .connect-section.section-light .endpoint-label, .connect-section.section-light .copy-status { color: #536473; }
+.connect-section.section-light .connection-requirements a { color: #237e70; }
 .faq-layout { display: grid; grid-template-columns: .85fr 1fr; gap: 80px; }
 .faq-list { border-top: 1px solid var(--line); }
 .faq-list details { padding: 22px 0; border-bottom: 1px solid var(--line); }
