@@ -232,3 +232,19 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 @media (max-width: 700px) { .analytics-banner { inset: auto 12px 12px; flex-direction: column; align-items: stretch; gap: 16px; padding: 18px; } .analytics-actions button { flex: 1; } }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.reveal { opacity: 1; transform: none; transition: none; }.button, .service-arrow, .text-link span, .pain-card { transition: none; } }
+
+/* Privacy page and secondary footer navigation. */
+.footer-bottom { flex-wrap: wrap; align-items: center; }
+.footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; font-size: 14px; }
+#personal-space, #privacy-notice { scroll-margin-top: 24px; }
+.privacy-header { color: #eaf4f1; background: var(--navy); }
+.privacy-home { color: var(--cyan); font-size: 14px; }
+.privacy-document { max-width: 760px; padding-top: clamp(44px, 7vw, 80px); padding-bottom: clamp(52px, 7vw, 88px); overflow-wrap: anywhere; }
+.privacy-document h1 { margin: 0 0 20px; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.15; }
+.privacy-intro { margin-bottom: 36px; color: #536473; font-size: 17px; }
+.privacy-section { padding: 24px 0; border-top: 1px solid var(--line); }
+.privacy-section h2 { margin: 0 0 12px; font-size: 22px; line-height: 1.35; }
+.privacy-section p { margin: 0; color: #536473; }
+.privacy-section p + p { margin-top: 16px; }
+.privacy-section a { color: #237e70; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 700px) { .footer-links { margin-top: 12px; } .footer-bottom > span { display: block; } .footer-bottom #current-year { display: inline; margin: 0; } }

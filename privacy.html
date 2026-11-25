@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="How Datavyx handles your knowledge, permissions, and website analytics." />
+    <meta name="theme-color" content="#071421" />
+    <link rel="canonical" href="https://www.datavyx.com/privacy.html" />
+    <title>Privacy &amp; data use | Datavyx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <script src="analytics.js" defer></script>
+  </head>
+  <body class="privacy-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="privacy-header">
+      <div class="container header-inner"><a class="brand" href="/" aria-label="Datavyx home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 29 27h-6.1l-2.4-4.8H11.5L9.1 27H3L16 3Zm0 9.1-2.5 5.2h5L16 12.1Z" /></svg></span><span>Datavyx</span></a><a class="privacy-home" href="/">Back to home</a></div>
+    </header>
+    <main id="main-content" class="container privacy-document">
+      <h1>Privacy &amp; data use</h1>
+      <p class="privacy-intro">Your records stay in your personal workspace. Every read and write is checked against your identity and permissions.</p>
+      <section class="privacy-section"><h2>Your personal space stays separate</h2><p>Other users cannot access your personal records simply by connecting to Datavyx.</p></section>
+      <section class="privacy-section"><h2>Access follows your authorization</h2><p>Your assistant can only read or change records allowed by your granted permissions and workspace membership.</p></section>
+      <section class="privacy-section"><h2>Your chat is not saved automatically</h2><p>Datavyx receives the information your assistant sends for a tool request, not your complete chat history automatically.</p></section>
+      <section class="privacy-section"><h2>No unauthorized access or use</h2><p>We do not view or use your information without your permission.</p></section>
+      <section id="website-analytics" class="privacy-section"><h2>Website analytics &amp; your choices</h2>
+        <p>With your permission, Microsoft Clarity uses cookies to measure visits, clicks, scrolling and session replays on this public website. Microsoft processes this usage data. We do not send account identifiers, email addresses or knowledge records to Clarity. You can decline or withdraw permission through Analytics preferences. Declining does not prevent you from using this website.</p>
+        <p>A separate OpenAI Ads Pixel on our homepage measures advertising-related page views. The Clarity preference does not control that pixel. See the <a href="https://www.microsoft.com/privacy/privacystatement">Microsoft Privacy Statement</a>, <a href="https://clarity.microsoft.com/terms">Clarity Terms of Use</a> and <a href="https://openai.com/policies/privacy-policy/">OpenAI Privacy Policy</a>. For questions, contact <a href="mailto:support@datavyx.com">support@datavyx.com</a>.</p>
+      </section>
+      <section class="privacy-section"><h2>Contact us</h2><p>For questions about your information or these practices, email <a href="mailto:support@datavyx.com">support@datavyx.com</a>.</p></section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-bottom"><span>© <span id="current-year">2026</span> Datavyx.</span><nav class="footer-links" aria-label="Footer links"><a class="privacy-link" href="/">Back to home</a><button id="analytics-preferences" class="privacy-link" type="button" hidden>Analytics preferences</button></nav></div>
+    </footer>
+    <section id="analytics-banner" class="analytics-banner" aria-labelledby="analytics-title" hidden>
+      <div>
+        <h2 id="analytics-title">Help us improve Datavyx</h2>
+        <p>Allow Microsoft Clarity cookies and session replays to help us understand visits and clicks? You can change your choice anytime. This choice applies to Clarity only. <a href="privacy.html#website-analytics">Privacy details</a></p>
+        <p id="analytics-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="analytics-actions"><button id="analytics-decline" type="button">Decline</button><button id="analytics-allow" type="button">Allow analytics</button></div>
+    </section>
+  </body>
+</html>

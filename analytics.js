@@ -57,7 +57,6 @@
   allow.addEventListener('click', () => choose('granted'));
   decline.addEventListener('click', () => choose('denied'));
   banner.querySelector('a').addEventListener('click', () => {
-    document.querySelector('#privacy-notice').open = true;
     banner.hidden = true;
   });
   document.addEventListener('click', (event) => {
