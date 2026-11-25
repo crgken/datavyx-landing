@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
     <script src="analytics.js" defer></script>
+    <script src="hero-animation.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -64,24 +65,22 @@
             <div class="hero-actions"><a class="button button-primary" href="#connect">Get started for free <span aria-hidden="true">↓</span></a><a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a></div>
             <p class="hero-note">Verified on ChatGPT web. Access depends on your plan and workspace.</p>
           </div>
-          <figure class="workflow-window" aria-labelledby="cedar-example-title">
-            <figcaption class="window-bar"><span id="cedar-example-title">Project Cedar</span><span class="example-label">Example</span></figcaption>
-            <div class="workflow-body">
-              <div class="workflow-chat">
-                <p class="mini-label">First chat · Save a note</p>
-                <div class="chat-message"><span class="message-author">You</span><p>Save this project note: Project Cedar’s approved budget is 15,000 USD.</p></div>
-                <div class="chat-message assistant-message"><span class="message-author">Datavyx · Save receipt</span><p>Saved Cedar’s budget and kept your original note.</p></div>
-              </div>
-              <div class="workflow-chat">
-                <p class="mini-label">New chat · Find it again</p>
-                <div class="chat-message"><span class="message-author">You</span><p>What’s the approved budget for Project Cedar?</p></div>
-                <div class="example-record">
-                  <span class="message-author">Datavyx result · Approved budget</span>
-                  <p class="record-value">$15,000</p>
-                  <div class="record-source"><p class="message-author">Source · Original project note</p><blockquote>Project Cedar’s approved budget is 15,000 USD.</blockquote></div>
+          <figure class="workflow-window hero-demo" aria-labelledby="hero-demo-title" aria-describedby="hero-demo-description">
+            <figcaption class="window-bar"><span id="hero-demo-title">Save it. Find it again.</span><span class="example-label">Example</span></figcaption>
+            <p id="hero-demo-description" class="sr-only">Illustrative animation: save a note saying our first testers are individual ChatGPT users, then retrieve it in a new chat. No real records are accessed.</p>
+            <div class="demo-scene" aria-hidden="true">
+              <div class="demo-chat">
+                <div class="demo-chat-header"><strong>ChatGPT</strong> <span class="demo-handle">@datavyx</span><span class="demo-new-chat"> · New chat</span></div>
+                <div class="demo-chat-body">
+                  <div class="demo-bubble demo-note"><div class="demo-line">Save this for me.</div><div class="demo-line">First testers:</div><div class="demo-line">Individual ChatGPT users.</div></div>
+                  <div class="demo-bubble demo-question">Who are our first testers?</div>
+                  <div class="demo-bubble demo-answer"><strong>First testers</strong>Individual ChatGPT users.</div>
                 </div>
               </div>
+              <div class="demo-folder"><div class="demo-back"></div><div class="demo-front"></div></div>
+              <div class="demo-paper"></div>
             </div>
+            <div class="demo-controls"><a class="button button-primary demo-cta" href="#connect">Get started for free</a><button class="demo-toggle" type="button" aria-label="Pause example animation" hidden>Pause</button></div>
           </figure>
         </div>
         <div class="container hero-bottom"><span>Record with context. Retrieve with evidence.</span><span class="scroll-cue"><span></span> Scroll to explore</span></div>
