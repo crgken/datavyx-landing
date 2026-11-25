@@ -17,7 +17,7 @@ Update access wording only after actual acceptance and production rollout. After
 
 ## Browser interactions
 
-The hero uses the user-supplied save/retrieve animation, adapted in `hero-animation.js` with scoped styles and English copy. It loops every 11 seconds, can be paused/resumed, and links to the connection guide. Reduced-motion preferences and disabled JavaScript show a static result. It is explicitly illustrative and does not access knowledge records.
+The hero uses the user-supplied save/retrieve animation, adapted in `hero-animation.js` with scoped styles and English copy. It loops automatically every 11 seconds and links to the connection guide. Reduced-motion preferences and disabled JavaScript show a static result. It is explicitly illustrative and does not access knowledge records.
 
 Privacy information is available from the secondary footer **Privacy** link at `privacy.html`. The page preserves the four approved knowledge/privacy statements and website analytics disclosures. It uses the shared consent controls for Clarity; the OpenAI Ads Pixel remains on the homepage only. The old `#personal-space` and `#privacy-notice` homepage anchors now lead to the footer entry. The privacy page and its home links remain readable without JavaScript.
 

@@ -275,8 +275,6 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 .demo-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 88px; padding: 16px 22px; border-top: 1px solid #36515c; }
 .demo-cta { font-size: 14px; transition: opacity 320ms ease, transform 320ms ease; }
 .hero-demo.is-animated .demo-cta:not(.is-ready) { visibility: hidden; opacity: 0; transform: translateY(6px); }
-.demo-toggle { min-height: 44px; padding: 8px 10px; border: 1px solid #567480; border-radius: 5px; color: #d4e7e8; background: none; font: 600 14px var(--body); cursor: pointer; }
-.hero-demo.is-paused .demo-typing::after { animation-play-state: paused; }
 @media (max-width: 500px) {
   .demo-scene { grid-template-columns: minmax(0, 1fr) 48px; gap: 12px; min-height: 290px; padding: 26px 12px; }
   .demo-chat { padding: 10px; }

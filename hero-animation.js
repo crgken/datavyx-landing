@@ -12,7 +12,6 @@
   const front = root.querySelector('.demo-front');
   const paper = root.querySelector('.demo-paper');
   const cta = root.querySelector('.demo-cta');
-  const toggle = root.querySelector('.demo-toggle');
   const phrases = ['Save this for me.', 'First testers:', 'Individual ChatGPT users.'];
   const cycleDuration = 11000;
   const clamp = value => Math.max(0, Math.min(1, value));
@@ -82,7 +81,6 @@
   let elapsed = 0;
   let lastFrame = null;
   let frameId;
-  let paused = false;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
 
   function frame(now) {
@@ -100,15 +98,10 @@
   function sync() {
     stop();
     root.classList.toggle('is-animated', !motion.matches);
-    root.classList.toggle('is-paused', paused);
-    toggle.hidden = motion.matches;
-    toggle.textContent = paused ? 'Play' : 'Pause';
-    toggle.setAttribute('aria-label', paused ? 'Play example animation' : 'Pause example animation');
     if (motion.matches) render(8000);
-    else if (!paused && !document.hidden) frameId = requestAnimationFrame(frame);
+    else if (!document.hidden) frameId = requestAnimationFrame(frame);
   }
 
-  toggle.addEventListener('click', () => { paused = !paused; sync(); });
   motion.addEventListener('change', sync);
   document.addEventListener('visibilitychange', sync);
   measure();
