@@ -14,7 +14,9 @@
   const resultIcons = [...root.querySelectorAll('.demo-result-icon')];
   const cta = root.querySelector('.demo-cta');
   const phrases = ['Save this for me.', 'First testers:', 'Individual ChatGPT users.'];
-  const cycleDuration = 14000;
+  const retrievalSpeed = .8;
+  const retrievalDelay = resultIcons.length * 850 * (1 / retrievalSpeed - 1);
+  const cycleDuration = 14000 + retrievalDelay;
   const clamp = value => Math.max(0, Math.min(1, value));
   const ease = value => value * value * (3 - 2 * value);
   const phase = (time, start, end) => clamp((time - start) / (end - start));
@@ -47,12 +49,13 @@
     const pack = ease(phase(time, 2360, 2780));
     note.style.transform = `scale(${1 - .88 * pack}, ${1 - .58 * pack})`;
     note.style.opacity = 1 - pack;
+    root.classList.toggle('has-saved', time >= 4190);
 
     newChat.hidden = time < 4350;
     question.style.opacity = phase(time, 4350, 4550);
     type(question, 'Who are our first testers?', phase(time, 4500, 5650));
 
-    const expand = ease(phase(time, 9800, 10260));
+    const expand = ease(phase(time, 9800 + retrievalDelay, 10260 + retrievalDelay));
     const spring = Math.sin(Math.PI * expand) * .12;
     answer.style.opacity = expand;
     answer.style.transform = `scale(${.22 + .78 * expand + spring}, ${.55 + .45 * expand})`;
@@ -70,8 +73,8 @@
 
     let read = 0;
     resultIcons.forEach((icon, index) => {
-      // Each 850 ms flight has its own 1,000 ms slot: icons never overlap.
-      const local = time - (5880 + index * 1000);
+      // Slow only retrieval flights by 20%, preserving the 150 ms gap between icons.
+      const local = (time - (5880 + index * (850 / retrievalSpeed + 150))) * retrievalSpeed;
       const active = local >= 0 && local < 850;
       const progress = ease(phase(local, 120, 760));
       const arc = Math.sin(Math.PI * progress);
@@ -86,7 +89,7 @@
     const save = phase(time, 3270, 3530) * (1 - phase(time, 3920, 4180));
     const bounce = Math.sin(Math.PI * phase(time, 3890, 4190));
     front.style.transform = `perspective(140px) rotateX(${-36 * (save + read)}deg) scale(${1 + .06 * bounce})`;
-    cta.classList.toggle('is-ready', time >= 10580);
+    cta.classList.toggle('is-ready', time >= 10580 + retrievalDelay);
   }
 
 
@@ -110,7 +113,7 @@
   function sync() {
     stop();
     root.classList.toggle('is-animated', !motion.matches);
-    if (motion.matches) render(11000);
+    if (motion.matches) render(11000 + retrievalDelay);
     else if (!document.hidden) frameId = requestAnimationFrame(frame);
   }
 

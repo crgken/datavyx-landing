@@ -266,6 +266,8 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 .demo-answer { top: 64px; border-color: #38695f; background: #102e35; }
 .demo-answer strong { display: block; color: var(--cyan); }
 .demo-folder { position: relative; height: 58px; }
+.demo-folder-note { position: absolute; top: calc(100% + 10px); left: 50%; width: 72px; transform: translateX(-50%); color: var(--cyan); text-align: center; font: 500 12px/1.4 var(--body); }
+.hero-demo.is-animated:not(.has-saved) .demo-folder-note { visibility: hidden; }
 .demo-back, .demo-front { position: absolute; inset: auto 0 0; border-radius: 7px; }
 .demo-back { top: 12px; background: #a4e9de; }
 .demo-back::before { content: ""; position: absolute; top: -7px; width: 27px; height: 12px; border-radius: 6px 6px 0 0; background: inherit; }
