@@ -11,6 +11,7 @@
   const folder = root.querySelector('.demo-folder');
   const front = root.querySelector('.demo-front');
   const paper = root.querySelector('.demo-paper');
+  const results = root.querySelector('.demo-results');
   const cta = root.querySelector('.demo-cta');
   const phrases = ['Save this for me.', 'First testers:', 'Individual ChatGPT users.'];
   const cycleDuration = 11000;
@@ -66,9 +67,11 @@
     const y = from[1] + (to[1] - from[1]) * fly - 45 * arc - 19 * pop;
     const tilt = (retrieving ? -15 : 15) * arc - 9 * pop;
     paper.style.opacity = retrieving
-      ? phase(time, 5880, 6090) * (1 - expand)
+      ? 0
       : phase(time, 2540, 2750) * (1 - phase(time, 3760, 3990));
     paper.style.transform = `translate(${x - 15}px, ${y - 19}px) rotate(${tilt}deg) scale(${1 + .24 * pop})`;
+    results.style.opacity = retrieving ? phase(time, 5880, 6090) * (1 - expand) : 0;
+    results.style.transform = `translate(${x - 30}px, ${y - 35}px) rotate(${tilt * .5}deg)`;
 
     const save = phase(time, 3270, 3530) * (1 - phase(time, 3920, 4180));
     const read = phase(time, 5640, 5890) * (1 - phase(time, 6270, 6500));
