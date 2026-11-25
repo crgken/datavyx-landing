@@ -12,11 +12,13 @@
   const front = root.querySelector('.demo-front');
   const paper = root.querySelector('.demo-paper');
   const resultIcons = [...root.querySelectorAll('.demo-result-icon')];
-  const cta = root.querySelector('.demo-cta');
   const phrases = ['Save this for me.', 'First testers:', 'Individual ChatGPT users.'];
   const retrievalSpeed = .8;
-  const retrievalDelay = resultIcons.length * 850 * (1 / retrievalSpeed - 1);
-  const cycleDuration = 14000 + retrievalDelay;
+  const retrievalStart = 5880;
+  const flightEnd = 760;
+  const iconInterval = 850 / retrievalSpeed + 150;
+  const answerStart = retrievalStart + (resultIcons.length - 1) * iconInterval + flightEnd / retrievalSpeed + 150;
+  const cycleDuration = answerStart + 4200;
   const clamp = value => Math.max(0, Math.min(1, value));
   const ease = value => value * value * (3 - 2 * value);
   const phase = (time, start, end) => clamp((time - start) / (end - start));
@@ -36,7 +38,7 @@
 
   let points;
   function measure() {
-    points = { note: center(note), folder: center(folder), answer: center(answer) };
+    points = { note: center(note), folder: center(folder), results: resultIcons.map(center) };
     points.folder[1] += 12;
   }
 
@@ -55,7 +57,7 @@
     question.style.opacity = phase(time, 4350, 4550);
     type(question, 'Who are our first testers?', phase(time, 4500, 5650));
 
-    const expand = ease(phase(time, 9800 + retrievalDelay, 10260 + retrievalDelay));
+    const expand = ease(phase(time, answerStart, answerStart + 460));
     const spring = Math.sin(Math.PI * expand) * .12;
     answer.style.opacity = expand;
     answer.style.transform = `scale(${.22 + .78 * expand + spring}, ${.55 + .45 * expand})`;
@@ -73,23 +75,25 @@
 
     let read = 0;
     resultIcons.forEach((icon, index) => {
-      // Slow only retrieval flights by 20%, preserving the 150 ms gap between icons.
-      const local = (time - (5880 + index * (850 / retrievalSpeed + 150))) * retrievalSpeed;
-      const active = local >= 0 && local < 850;
-      const progress = ease(phase(local, 120, 760));
-      const arc = Math.sin(Math.PI * progress);
-      const pop = Math.sin(Math.PI * phase(local, 0, 200));
-      const x = points.folder[0] + (points.answer[0] - points.folder[0]) * progress;
-      const y = points.folder[1] + (points.answer[1] - points.folder[1]) * progress - 45 * arc - 12 * pop;
-      icon.style.opacity = active ? phase(local, 0, 100) * (1 - phase(local, 720, 850)) : 0;
-      icon.style.transform = `translate(${x - 14}px, ${y - 16.5}px) rotate(${-15 * arc}deg)`;
+      const local = (time - (retrievalStart + index * iconInterval)) * retrievalSpeed;
+      icon.style.opacity = phase(local, 0, 100);
+      if (local > 0 && local < flightEnd) {
+        const progress = ease(phase(local, 120, flightEnd));
+        const arc = Math.sin(Math.PI * progress);
+        const pop = Math.sin(Math.PI * phase(local, 0, 200));
+        const [targetX, targetY] = points.results[index];
+        const x = (to[0] - targetX) * (1 - progress);
+        const y = (to[1] - targetY) * (1 - progress) - 45 * arc - 12 * pop;
+        icon.style.transform = `translate(${x}px, ${y}px) rotate(${-15 * arc}deg)`;
+      } else {
+        icon.style.transform = 'none';
+      }
       read = Math.max(read, phase(local, 0, 100) * (1 - phase(local, 180, 320)));
     });
 
     const save = phase(time, 3270, 3530) * (1 - phase(time, 3920, 4180));
     const bounce = Math.sin(Math.PI * phase(time, 3890, 4190));
     front.style.transform = `perspective(140px) rotateX(${-36 * (save + read)}deg) scale(${1 + .06 * bounce})`;
-    cta.classList.toggle('is-ready', time >= 10580 + retrievalDelay);
   }
 
 
@@ -113,7 +117,7 @@
   function sync() {
     stop();
     root.classList.toggle('is-animated', !motion.matches);
-    if (motion.matches) render(11000 + retrievalDelay);
+    if (motion.matches) render(answerStart + 460);
     else if (!document.hidden) frameId = requestAnimationFrame(frame);
   }
 
