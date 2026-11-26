@@ -2,6 +2,16 @@
 
 This is a dependency-free static website for Datavyx. It is separate from the product application and can be deployed independently.
 
+## Support and policy update — 2026-11-26
+
+`support.html`, `terms.html` and `privacy.html` identify Datavyx, LLC and support@datavyx.com, describe account closure and retention, and remain readable without JavaScript. The homepage adds these footer links and clearly says the shared public plugin is being prepared; it does not claim a published listing. Existing animations, Clarity consent and the separate homepage Ads Pixel are preserved.
+
+The confirmed operational limits are account-lifetime knowledge/history and recoverable deletion; identity-verified account closure with active personal-data processing within 30 days; backups on a 30-day cycle (ordinarily at most 60 days from verified closure through backup expiration); technical/security logs up to 30 days; and necessary support case records for 12 calendar months after closure. Publish these pages only after the backend retention rollout and actual host checks. A draft effective date is not evidence that rollout is complete.
+
+New self-service connection registration is currently limited by the identity provider's application quota. The backend's ability to accept eligible clients is separate from creating a new OAuth client. Public distribution is being prepared with one preconfigured client; end users should contact support for current connection options. No new Auth0 application or frontend build is part of this website change.
+
+Local checks cover 1440px, 390px and 320px policy layouts without horizontal overflow, no-script text/mail/footer access, and no console errors. Production HTTPS status and the exact Git commit must be checked separately after deployment.
+
 Datavyx is a knowledge management MCP service used through an authorized AI assistant connection. The production MCP endpoint is <https://kb.datavyx.com/mcp>. The former Flutter web application has been retired; its root URL is a migration notice, not a sign-in or product launch screen.
 
 The website preserves the Datavyx brand and English visual identity. It covers source-backed recording and retrieval, exact statistics, corrections with history, recoverable deletion/restoration, personal workspaces, and connection guidance. The hero conversation is explicitly illustrative and never calls the knowledge API.
