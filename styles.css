@@ -240,6 +240,23 @@ input:focus-visible, summary:focus-visible { outline: 3px solid var(--cyan-deep)
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.reveal { opacity: 1; transform: none; transition: none; }.button, .service-arrow, .text-link span, .pain-card { transition: none; } }
 
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.65rem);
+  line-height: 1.04;
+  overflow-wrap: break-word;
+}
+
+.hero h1 em {
+  display: inline-block;
+  margin-top: .3em;
+}
+
+#capabilities .section-heading h2 { margin-bottom: 0; }
+#capabilities .pain-grid { margin-top: clamp(28px, 4vw, 48px); }
+#capabilities .pain-card { min-height: auto; padding: 25px; }
+#capabilities .pain-card h3 { margin: 0 0 13px; }
+#capabilities .pain-card p { margin-bottom: 0; }
+
 /* Privacy page and secondary footer navigation. */
 .footer-bottom { flex-wrap: wrap; align-items: center; }
 .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; font-size: 14px; }
