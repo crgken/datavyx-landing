@@ -41,46 +41,29 @@
 
     .dvx-fd-label { color: #b5ccdb; font-size: 12px; }
 
-    .dvx-fd-tabs {
+    .dvx-fd-steps {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .dvx-fd-tab {
-      background: transparent;
+    .dvx-fd-step {
       border: 1px solid transparent;
       color: #8fa3b8;
       font-size: 12px;
       font-weight: 500;
       padding: 5px 12px;
       border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      text-align: center;
     }
 
-    .dvx-fd-tab:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .dvx-fd-tab.active {
+    .dvx-fd-step[aria-current="step"] {
       color: var(--mint);
       background: rgba(93, 228, 199, 0.14);
       border-color: rgba(93, 228, 199, 0.35);
-    }
-
-    .dvx-fd-progress {
-      height: 2px;
-      flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.06);
-      width: 100%;
-    }
-
-    .dvx-fd-progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--mint);
     }
 
     /* Main Viewport */
@@ -816,29 +799,6 @@
       font-weight: 600;
     }
 
-    /* Bottom Status Bar */
-    .dvx-fd-footer {
-      padding: 12px 20px;
-      background: #050e16;
-      border-top: 1px solid var(--border-frame);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 12.5px;
-      color: #9cb0c4;
-    }
-
-    .dvx-fd-ctrl {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #e2e8f0;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
     .gpt-shell, .gpt-settings-shell { background: #f4f8f8; }
     .gpt-side, .gpt-set-side { flex: 0 0 clamp(94px, 27vw, 168px); background: #e7efef; }
     .gpt-body, .gpt-set-main { min-width: 0; }
@@ -847,12 +807,11 @@
     .gpt-dialog, .auth0-card { max-height: calc(100% - 24px); overflow: auto; }
     .gpt-connected-row { flex-wrap: wrap; gap: 12px; }
     .dvx-full-demo:not(.is-playing) .dvx-cursor, .dvx-full-demo:not(.is-playing) .dvx-ring { visibility: hidden; }
-    .dvx-fd-tab:focus-visible, .dvx-fd-ctrl:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
 
     @media (max-width: 480px) {
-      .dvx-fd-header, .dvx-fd-footer { padding: 9px 12px; }
-      .dvx-fd-tabs { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .dvx-fd-tab { justify-self: stretch; padding: 6px 4px; }
+      .dvx-fd-header { padding: 9px 12px; }
+      .dvx-fd-steps { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dvx-fd-step { padding: 6px 4px; }
       .gpt-body, .gpt-set-main { padding: 12px; }
       .gpt-side { padding: 12px 6px; }
       .gpt-side-top { padding: 4px 0 10px; }
@@ -875,16 +834,12 @@
 <div class="dvx-full-demo">
   <div class="dvx-fd-header">
     <span class="dvx-fd-label">Setup demo · Example screens</span>
-    <div class="dvx-fd-tabs">
-      <button type="button" class="dvx-fd-tab active" data-step="0" aria-current="step">1. Add MCP server</button>
-      <button type="button" class="dvx-fd-tab" data-step="1">2. Sign in</button>
-      <button type="button" class="dvx-fd-tab" data-step="2">3. Sign up if offered</button>
-      <button type="button" class="dvx-fd-tab" data-step="3">4. Authorize</button>
-    </div>
-  </div>
-
-  <div class="dvx-fd-progress">
-    <div class="dvx-fd-progress-fill" id="fdProgress"></div>
+    <ol class="dvx-fd-steps" aria-label="Connection demo steps">
+      <li class="dvx-fd-step">1. Add MCP server</li>
+      <li class="dvx-fd-step">2. Sign in</li>
+      <li class="dvx-fd-step">3. Sign up if offered</li>
+      <li class="dvx-fd-step" aria-current="step">4. Authorize</li>
+    </ol>
   </div>
 
   <div class="dvx-fd-viewport">
@@ -896,7 +851,7 @@
       <div class="dvx-ring" id="fdRing"></div>
 
       <!-- Screen A: ChatGPT Plugins Hub -->
-      <div class="dvx-screen gpt-shell active" data-screen="0">
+      <div class="dvx-screen gpt-shell" data-screen="0">
         <div class="gpt-side">
           <div class="gpt-side-top">
             <span class="gpt-logo-text">ChatGPT</span>
@@ -1061,7 +1016,7 @@
       </div>
 
       <!-- Screen C: ChatGPT Settings Connected State -->
-      <div class="dvx-screen gpt-settings-shell" data-screen="2">
+      <div class="dvx-screen gpt-settings-shell active" data-screen="2">
         <div class="gpt-set-side">
           <div style="padding:6px 10px 14px;color:#6b7280;font-size:12px;">← Back to chat</div>
           <div class="gpt-set-item">General</div>
@@ -1097,31 +1052,19 @@
     </div>
   </div>
 
-  <div class="dvx-fd-footer">
-    <span id="fdCaption">Step 1: Open Plugins → click Add → enter Name & MCP Server URL</span>
-    <button class="dvx-fd-ctrl" id="fdPlayBtn">Pause</button>
-  </div>
 </div>
 
 <script>
   (function () {
-    const STEP_DURATIONS = [7200, 3400, 6800, 5600];
+    const STEP_DURATIONS = [9000, 5000, 8600, 7600];
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
-    let step = 0;
-    let playing = !motion.matches;
-    let elapsed = 0;
-    let lastTime = performance.now();
     let timers = [];
-    let frame;
 
     const demo = document.querySelector(".dvx-full-demo");
-    const playButton = document.getElementById("fdPlayBtn");
     const canvas = document.getElementById("fdCanvas");
     const cursor = document.getElementById("fdCursor");
     const ring = document.getElementById("fdRing");
-    const progress = document.getElementById("fdProgress");
-    const caption = document.getElementById("fdCaption");
-    const tabs = document.querySelectorAll(".dvx-fd-tab");
+    const steps = document.querySelectorAll(".dvx-fd-step");
     const screens = document.querySelectorAll(".dvx-screen");
 
     function clearAll() {
@@ -1193,26 +1136,23 @@
       screens.forEach((sc, i) => sc.classList.toggle("active", i === idx));
     }
 
+    function markStep(s) {
+      steps.forEach((label, index) => {
+        if (index === s) label.setAttribute("aria-current", "step");
+        else label.removeAttribute("aria-current");
+      });
+    }
+
     function runStep(s) {
       clearAll();
-      step = s;
-      elapsed = 0;
-      lastTime = performance.now();
-      progress.style.width = "0%";
-      const animate = playing && !motion.matches;
-      demo.classList.toggle("is-playing", animate);
       ring.classList.remove("animate");
       zoomTo(1);
-      tabs.forEach((tab, index) => {
-        tab.classList.toggle("active", index === s);
-        if (index === s) tab.setAttribute("aria-current", "step");
-        else tab.removeAttribute("aria-current");
-      });
+      markStep(s);
+      timers.push(setTimeout(() => runStep((s + 1) % STEP_DURATIONS.length), STEP_DURATIONS[s]));
 
       if (s === 0) {
         // Step 1: Plugins -> Add -> Add custom MCP server -> Fill & Create
         showScreen(0);
-        caption.textContent = "Step 1: Open Plugins → Add custom MCP server. Enter Datavyx and paste the server address.";
 
         const navPlugins = document.getElementById("elNavPlugins");
         const addBtn = document.getElementById("elAddBtn");
@@ -1240,16 +1180,6 @@
         consentBox.classList.remove("checked");
         chk.classList.remove("checked");
         createBtn.classList.remove("ready");
-
-        if (!animate) {
-          navPlugins.classList.remove("highlight-ring");
-          mask.classList.add("open");
-          inName.textContent = "Datavyx";
-          inName.classList.remove("ph");
-          inUrl.textContent = "https://kb.datavyx.com/mcp";
-          inUrl.classList.remove("ph");
-          return;
-        }
 
         // Pause briefly on left sidebar Plugins
         zoomTo(1.18, navPlugins);
@@ -1306,7 +1236,6 @@
       if (s === 1) {
         // Step 2: Click Sign in with your datavyx account
         showScreen(0);
-        caption.textContent = "Step 2: Click 'Sign in with your datavyx account' to launch OAuth";
 
         const mask = document.getElementById("elGptMask");
         const mcpDialog = document.getElementById("elMcpDialog");
@@ -1317,7 +1246,6 @@
         mcpDialog.classList.remove("show");
         loginCard.classList.add("show");
 
-        if (!animate) return;
         zoomTo(1.15, loginCard);
         timers.push(setTimeout(() => {
           moveAndClick(oauthBtn, 600);
@@ -1327,7 +1255,6 @@
       if (s === 2) {
         // Step 3: Click Sign up -> Enter email & password -> Continue
         showScreen(1);
-        caption.textContent = "Step 3: Sign in, or select Sign up if the authorization window offers it.";
 
         const formCard = document.getElementById("elAuthFormCard");
         const scopeCard = document.getElementById("elAuthScopeCard");
@@ -1350,7 +1277,6 @@
         passBox.classList.add("ph");
         pwRules.classList.remove("show");
 
-        if (!animate) return;
         zoomTo(1.08, formCard);
         const signupLink = document.getElementById("elSwitchToSignup");
 
@@ -1381,7 +1307,6 @@
       if (s === 3) {
         // Step 4: Click Accept -> Redirect back to ChatGPT Connected
         showScreen(1);
-        caption.textContent = "Step 4: Review the requested access. If you accept, check that Datavyx shows as connected in ChatGPT.";
 
         const formCard = document.getElementById("elAuthFormCard");
         const scopeCard = document.getElementById("elAuthScopeCard");
@@ -1391,7 +1316,6 @@
         formCard.style.display = "none";
         scopeCard.style.display = "block";
 
-        if (!animate) return;
         zoomTo(1.06, scopeCard);
 
         timers.push(setTimeout(() => {
@@ -1410,54 +1334,20 @@
       }
     }
 
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => runStep(Number(tab.dataset.step)));
-    });
-
-    function loop(now) {
-      elapsed += Math.min(now - lastTime, 100);
-      lastTime = now;
-      const duration = STEP_DURATIONS[step];
-      progress.style.width = Math.min((elapsed / duration) * 100, 100) + "%";
-      if (elapsed >= duration) {
-        runStep((step + 1) % STEP_DURATIONS.length);
-      }
-      frame = requestAnimationFrame(loop);
-    }
-
-    function start() {
-      playButton.textContent = "Pause";
-      runStep(step);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function pause() {
-      playing = false;
-      cancelAnimationFrame(frame);
+    function syncMotion() {
       clearAll();
-      playButton.textContent = "Play";
-      demo.classList.remove("is-playing");
+      demo.classList.toggle("is-playing", !motion.matches);
+      if (motion.matches) {
+        zoomTo(1);
+        markStep(3);
+        showScreen(2);
+      } else {
+        runStep(0);
+      }
     }
 
-    playButton.addEventListener("click", () => {
-      if (playing) {
-        pause();
-      } else {
-        playing = true;
-        start();
-      }
-    });
-    motion.addEventListener("change", () => {
-      if (motion.matches) {
-        pause();
-        runStep(step);
-      }
-    });
-    if (playing) start();
-    else {
-      playButton.textContent = "Play";
-      runStep(0);
-    }
+    motion.addEventListener("change", syncMotion);
+    syncMotion();
   })();
 </script>
 
