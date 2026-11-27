@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datavyx · Find the Exact Line</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #ececec; font: 14px/1.5 system-ui, sans-serif; }
+    .window { width: 100%; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: #212121; }
+    .chat-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px 16px; }
+    .workspace { display: flex; flex: 1; min-height: 0; }
+    .sidebar { flex: 0 0 206px; padding: 14px 12px; background: #171717; border-right: 1px solid #ffffff12; }
+    .sidebar small { display: block; margin: 0 8px 6px; color: #a9b8b9; }
+    .thread { margin: 4px 0; padding: 8px; color: #b2b2b2; border: 1px solid transparent; border-radius: 8px; font-size: 13px; }
+    .thread.active { background: #262626; color: #f3f3f3; border-color: #ffffff18; }
+    .chat { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .chat-bar { border-bottom: 1px solid #ffffff12; }
+    .chat-bar strong { white-space: nowrap; }
+    #scene-label { color: #a9b8b9; text-align: right; font-size: 12px; }
+    #chat-scroll-area { flex: 1; min-height: 0; overflow-y: auto; overflow-anchor: none; padding: 16px clamp(12px, 4vw, 32px); }
+    #chat-stream { max-width: 620px; margin: auto; }
+    .turn-item + .turn-item { margin-top: 12px; }
+    .message { max-width: 88%; min-width: 0; }
+    .user { margin-left: auto; }
+    .speaker { margin: 0 2px 4px; color: #adbbbc; font-size: 11px; }
+    .user .speaker { text-align: right; }
+    .bubble { margin: 0; padding: 9px 12px; background: #2f2f2f; border-radius: 12px; }
+    .assistant { max-width: 100%; }
+    .assistant .bubble { background: #24292a; }
+    .bubble p { margin: 0 0 8px; }
+    .bubble p:last-child { margin-bottom: 0; }
+    .history .bubble { color: #c6cecf; }
+    .original, .receipt, .result { margin: 0; padding: 10px 12px; background: #162729; border: 1px solid #5de2b558; border-radius: 8px; }
+    .original { margin-bottom: 8px; }
+    .receipt, .result-label { color: #86e6c9; font-size: 12px; font-weight: 600; }
+    .result-detail { margin: 6px 0 10px; color: #fff; font-size: 18px; font-weight: 700; }
+    .result blockquote { margin: 4px 0 0; padding: 6px 0 6px 10px; border-left: 2px solid #5de2b5; }
+    mark { color: #e0ffef; background: #2c594e; border-radius: 2px; padding: 0 2px; }
+    #chat-scroll-area:focus-visible { outline: 2px solid #7ceac4; outline-offset: -2px; }
+    @media (max-width: 660px) { .sidebar { display: none; } }
+    @media (max-width: 420px) { .chat-bar strong { white-space: normal; } }
+    @media (prefers-reduced-motion: reduce) { .turn-item { transition: none !important; } }
+    #chat-scroll-area::-webkit-scrollbar {
+      width: 5px;
+    }
+    #chat-scroll-area::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    #chat-scroll-area::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+    }
+    #chat-scroll-area::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .turn-item {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .turn-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+</head>
+<body>
+  <section class="window" aria-label="Datavyx source retrieval demo">
+    <div class="workspace">
+      <aside class="sidebar" aria-hidden="true">
+        <small>Chats</small>
+        <div class="thread active" id="old-thread">Dave’s redesign quote</div>
+        <div class="thread">Project schedule</div>
+        <div class="thread">Handoff notes</div>
+        <div class="thread" id="new-thread" hidden>New chat</div>
+      </aside>
+      <main class="chat">
+        <header class="chat-bar">
+          <strong id="thread-label">Dave’s redesign quote</strong>
+          <span id="scene-label">Tuesday · Pricing</span>
+        </header>
+        <div id="chat-scroll-area" tabindex="0" aria-label="Demo conversation">
+          <div id="chat-stream">
+            <noscript>
+              <p>Elena saved a line from an AI answer about Dave’s redesign. Days later, she asked the AI to recall it in a new chat. The AI remembered some optional work but couldn’t give an exact answer. Elena asked it to check her saved pricing note in Datavyx.</p>
+              <p><strong>Custom icons · $3,500 · Separate from the base quote</strong></p>
+              <blockquote>For Dave’s redesign, price custom icons at $3,500, separate from the base quote.</blockquote>
+            </noscript>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <script>
+    const originalLine = 'For Dave’s redesign, price custom icons at $3,500, separate from the base quote.';
+    const exactLine = originalLine.replace('separate from the base quote', '<mark>separate from the base quote</mark>');
+    const user = text => `<div class="message user"><div class="speaker">Elena</div><p class="bubble">${text}</p></div>`;
+    const assistant = text => `<div class="message assistant"><div class="speaker">AI assistant</div><div class="bubble">${text}</div></div>`;
+    const steps = [
+      {delay: 1050, html: user('Help me draft the quote for Dave’s website redesign.')},
+      {delay: 2950, html: assistant(`
+        <p>Keep the homepage and page templates in the base scope.</p>
+        <blockquote class="original">${exactLine}</blockquote>
+        <p>Include two review rounds and a handoff checklist.</p>
+      `)},
+      {delay: 1050, html: user('Save that pricing note to Datavyx.')},
+      {delay: 1150, html: '<p class="receipt">✓ Pricing note and original excerpt saved to Datavyx</p>'},
+      {delay: 950, label: 'Tuesday · Planning continues', html: `
+        <div class="history turn-item visible">${user('Which pages should we review first?')}</div>
+        <div class="history turn-item visible">${assistant('<p>Start with the homepage and pricing page. Once their layout is approved, use the same patterns for the remaining page templates.</p>')}</div>
+        <div class="history turn-item visible">${user('Move the first review to Thursday.')}</div>
+        <div class="history turn-item visible">${assistant('<p>Thursday for the first review. Ask Dave to send the replacement photos and final copy before then.</p>')}</div>
+      `},
+      {delay: 1750, label: 'Thursday · More follow-ups', html: `
+        <div class="history turn-item visible">${user('What should I include in the handoff?')}</div>
+        <div class="history turn-item visible">${assistant('<p>Share the source files, responsive layouts, and the short guide for updating page content.</p>')}</div>
+        <div class="history turn-item visible">${user('Draft a note asking for feedback by Friday.')}</div>
+        <div class="history turn-item visible">${assistant('<p>Hi Dave, could you send your comments on the homepage and pricing page by Friday? I’ll use those to prepare the next set of layouts.</p>')}</div>
+        <div class="history turn-item visible">${user('Add a reminder about the final copy.')}</div>
+        <div class="history turn-item visible">${assistant('<p>I’ll include a reminder about the final headlines, product descriptions, and any updated contact details.</p>')}</div>
+      `},
+      {delay: 700, label: 'Friday · Asking from memory', newChat: true},
+      {delay: 1900, html: user('Can you remember what we said about the extras for Dave’s redesign?')},
+      {delay: 3000, html: assistant('<p>I remember we talked about some optional work, but I’m not sure which item we priced separately or how much it was.</p>')},
+      {delay: 1450, label: 'Friday · Checking a saved note', html: user('Check Datavyx for the pricing note I saved.')},
+      {delay: 1250, searching: true, html: '<p class="receipt">Searching Datavyx…</p>'},
+      {delay: 5200, label: 'Friday · Original line found', html: `
+        <section class="result">
+          <div class="result-label">Found in Datavyx</div>
+          <p class="result-detail">Custom icons were priced at $3,500, separate from the base quote.</p>
+          <div class="result-label">Original excerpt · Tuesday’s pricing note</div>
+          <blockquote>${exactLine}</blockquote>
+        </section>
+      `}
+    ];
+
+    const stream = document.getElementById('chat-stream');
+    const scrollArea = document.getElementById('chat-scroll-area');
+    const threadLabel = document.getElementById('thread-label');
+    const sceneLabel = document.getElementById('scene-label');
+    const oldThread = document.getElementById('old-thread');
+    const newThread = document.getElementById('new-thread');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let nextStep = 0;
+    let timer;
+
+    function setThread(isNew) {
+      threadLabel.textContent = isNew ? 'New chat' : 'Dave’s redesign quote';
+      oldThread.classList.toggle('active', !isNew);
+      newThread.hidden = !isNew;
+      newThread.classList.toggle('active', isNew);
+    }
+
+    function reset() {
+      stream.replaceChildren();
+      scrollArea.scrollTop = 0;
+      sceneLabel.textContent = 'Tuesday · Pricing';
+      setThread(false);
+      nextStep = 0;
+    }
+
+    function renderStep(step, animate) {
+      stream.querySelector('.lookup-status')?.remove();
+      if (step.newChat) {
+        stream.replaceChildren();
+        scrollArea.scrollTop = 0;
+        setThread(true);
+      }
+      if (step.label) sceneLabel.textContent = step.label;
+
+      let turn;
+      if (step.html) {
+        turn = document.createElement('div');
+        turn.className = animate ? 'turn-item' : 'turn-item visible';
+        if (step.searching) turn.classList.add('lookup-status');
+        turn.innerHTML = step.html;
+        stream.append(turn);
+      }
+
+      const updateView = () => {
+        if (turn && !turn.isConnected) return;
+        turn?.classList.add('visible');
+        scrollArea.scrollTo({top: scrollArea.scrollHeight, behavior: animate ? 'smooth' : 'instant'});
+      };
+      if (animate && turn) requestAnimationFrame(() => requestAnimationFrame(updateView));
+      else updateView();
+    }
+
+    function playNext() {
+      if (nextStep === steps.length) reset();
+      const step = steps[nextStep++];
+      renderStep(step, true);
+      timer = setTimeout(playNext, step.delay);
+    }
+
+    function syncPlayback() {
+      clearTimeout(timer);
+      reset();
+      if (reducedMotion.matches) {
+        steps.forEach(step => renderStep(step, false));
+      } else {
+        playNext();
+      }
+    }
+
+    reducedMotion.addEventListener('change', syncPlayback);
+    syncPlayback();
+  </script>
+</body>
+</html>
