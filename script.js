@@ -42,17 +42,3 @@ if (copyButton && endpoint && copyStatus) {
     }
   });
 }
-
-const setupFrame = document.querySelector('.setup-frame');
-
-if (setupFrame && 'ResizeObserver' in window) {
-  const walkthrough = setupFrame.querySelector('iframe');
-  const fitWalkthrough = () => {
-    const scale = Math.min(1, setupFrame.clientWidth / walkthrough.offsetWidth);
-    setupFrame.style.setProperty('--setup-scale', String(scale));
-  };
-
-  setupFrame.setAttribute('data-fitted', '');
-  fitWalkthrough();
-  new ResizeObserver(fitWalkthrough).observe(setupFrame);
-}

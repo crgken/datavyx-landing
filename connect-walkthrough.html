@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datavyx Interactive Setup & OAuth Walkthrough</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    .dvx-full-demo {
+      --bg-frame: #07131d;
+      --mint: #5de4c7;
+      --border-frame: rgba(255, 255, 255, 0.1);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      font-family: var(--font-sans);
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      background: var(--bg-frame);
+      border: 1px solid var(--border-frame);
+      border-radius: 16px;
+      box-shadow: 0 28px 70px rgba(4, 12, 20, 0.34);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top Minimal Header */
+    .dvx-fd-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 13px 20px;
+      background: #050e16;
+      border-bottom: 1px solid var(--border-frame);
+    }
+
+    .dvx-fd-label { color: #b5ccdb; font-size: 12px; }
+
+    .dvx-fd-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .dvx-fd-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #8fa3b8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dvx-fd-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .dvx-fd-tab.active {
+      color: var(--mint);
+      background: rgba(93, 228, 199, 0.14);
+      border-color: rgba(93, 228, 199, 0.35);
+    }
+
+    .dvx-fd-progress {
+      height: 2px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.06);
+      width: 100%;
+    }
+
+    .dvx-fd-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--mint);
+    }
+
+    /* Main Viewport */
+    .dvx-fd-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .dvx-fd-canvas {
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+    }
+
+    /* Simulated Cursor & Click Ripple */
+    .dvx-cursor {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      z-index: 80;
+      pointer-events: none;
+      margin-left: -5px;
+      margin-top: -3px;
+      transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1), top 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+    }
+
+    .dvx-ring {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2.5px solid #10a37f;
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 79;
+    }
+
+    .dvx-ring.animate {
+      animation: dvxClickPulse 0.55s ease-out forwards;
+    }
+
+    @keyframes dvxClickPulse {
+      0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.3); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.7); }
+    }
+
+    .dvx-screen {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .dvx-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ==========================================
+       Screen A: Native ChatGPT Web Plugins UI
+       ========================================== */
+    .gpt-shell {
+      display: flex;
+      height: 100%;
+      background: #ffffff;
+      color: #0d0d0d;
+    }
+
+    .gpt-side {
+      width: 210px;
+      background: #f9f9f9;
+      border-right: 1px solid #ececec;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 13.5px;
+    }
+
+    .gpt-side-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 10px 14px;
+    }
+
+    .gpt-logo-text {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .gpt-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #1f2328;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .gpt-item.active {
+      background: #ececec;
+      font-weight: 500;
+    }
+
+    .gpt-item.highlight-ring {
+      box-shadow: 0 0 0 2px #0d0d0d;
+    }
+
+    .gpt-body {
+      flex: 1;
+      padding: 16px 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gpt-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .gpt-head-tabs {
+      display: flex;
+      gap: 16px;
+      font-size: 13.5px;
+      color: #6b7280;
+    }
+
+    .gpt-head-tabs span.on {
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+
+    .gpt-add-wrap {
+      position: relative;
+    }
+
+    .gpt-add-btn {
+      background: #0d0d0d;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .gpt-menu {
+      position: absolute;
+      right: 0;
+      top: 34px;
+      width: 186px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      padding: 5px;
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: all 0.2s ease;
+    }
+
+    .gpt-menu.open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gpt-menu-item {
+      padding: 7px 10px;
+      font-size: 12.5px;
+      border-radius: 6px;
+      color: #374151;
+    }
+
+    .gpt-menu-item.focus {
+      background: #f3f4f6;
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+
+    .gpt-hero {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .gpt-hero h3 {
+      font-size: 24px;
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+
+    .gpt-hero p {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0 0 16px;
+    }
+
+    .gpt-search {
+      max-width: 360px;
+      margin: 0 auto 24px;
+      padding: 8px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: #9ca3af;
+      text-align: left;
+    }
+
+    .gpt-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .gpt-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+    }
+
+    /* Modal Overlay */
+    .gpt-mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.34);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .gpt-mask.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Modal 1: Add custom MCP server */
+    .gpt-dialog {
+      width: 440px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+      color: #0d0d0d;
+      display: none;
+    }
+
+    .gpt-dialog.show {
+      display: block;
+    }
+
+    .gpt-dlg-title {
+      font-size: 15.5px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .gpt-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .gpt-icon-box {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #374151;
+    }
+
+    .gpt-field {
+      margin-bottom: 9px;
+    }
+
+    .gpt-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .gpt-seg {
+      display: inline-flex;
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 2px;
+      font-size: 10px;
+    }
+
+    .gpt-seg span {
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #6b7280;
+    }
+
+    .gpt-seg span.on {
+      background: #fff;
+      color: #111827;
+      font-weight: 500;
+    }
+
+    .gpt-input {
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 12px;
+      min-height: 16px;
+      color: #111827;
+      display: flex;
+      align-items: center;
+    }
+
+    .gpt-input.ph {
+      color: #9ca3af;
+    }
+
+    .gpt-input.mono {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+    }
+
+    .gpt-input.focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1);
+    }
+
+    .gpt-adv {
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #9ca3af;
+      font-size: 10.5px;
+    }
+
+    .gpt-warn {
+      border: 1px solid #e7d3c8;
+      background: #fdf8f6;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+
+    .gpt-consent {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .gpt-consent.checked {
+      border-color: #111827;
+      background: #fafafa;
+    }
+
+    .gpt-chk {
+      width: 14px;
+      height: 14px;
+      margin-top: 2px;
+      border: 1.5px solid #9ca3af;
+      border-radius: 3.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .gpt-chk.checked {
+      background: #111827;
+      border-color: #111827;
+    }
+
+    .gpt-dlg-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gpt-btn-gray {
+      background: #9ca3af;
+      border: none;
+      color: #fff;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 11.5px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .gpt-btn-gray.ready {
+      background: #0d0d0d;
+    }
+
+    /* Modal 2: Sign in with your datavyx account */
+    .gpt-login-card {
+      width: 310px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+      text-align: center;
+      display: none;
+    }
+
+    .gpt-login-card.show {
+      display: block;
+    }
+
+    .gpt-mcp-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: #f3f4f6;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #4b5563;
+    }
+
+    .gpt-login-btn {
+      margin-top: 18px;
+      width: 100%;
+      background: #18181b;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ==========================================
+       Screen B: Auth0 Sign-up & Consent Flow
+       ========================================== */
+    .auth0-screen {
+      height: 100%;
+      background: #0b1622;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1f2937;
+    }
+
+    .auth0-card {
+      width: 360px;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 28px 30px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .auth0-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #091d34;
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    .auth0-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: #111827;
+    }
+
+    .auth0-sub {
+      font-size: 12px;
+      color: #4b5563;
+      margin: 0 0 18px;
+      line-height: 1.45;
+    }
+
+    .auth0-input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      padding: 10px 12px;
+      font-size: 13px;
+      text-align: left;
+      margin-bottom: 10px;
+      color: #111827;
+      min-height: 38px;
+    }
+
+    .auth0-input.ph {
+      color: #9ca3af;
+    }
+
+    .auth0-input.focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .auth0-pw-rules {
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 11px;
+      color: #4b5563;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .auth0-pw-rules.show {
+      display: block;
+    }
+
+    .auth0-rule-ok {
+      color: #059669;
+      font-weight: 500;
+    }
+
+    .auth0-submit {
+      width: 100%;
+      background: #091d34;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 11px;
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .auth0-switch {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .auth0-link {
+      color: #2563eb;
+      font-weight: 500;
+    }
+
+    /* Consent Scope List */
+    .auth0-pair {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .auth0-gpt-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .auth0-scopes {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+      text-align: left;
+      font-size: 11.5px;
+      color: #374151;
+    }
+
+    .auth0-scopes li {
+      padding: 3px 0;
+    }
+
+    .auth0-scopes strong {
+      color: #111827;
+    }
+
+    .auth0-warn-box {
+      background: #fef9c3;
+      color: #854d0e;
+      font-size: 10.5px;
+      padding: 7px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .auth0-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .auth0-btn-decline {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      border-radius: 5px;
+      padding: 9px;
+      font-size: 13px;
+    }
+
+    .auth0-btn-accept {
+      flex: 1;
+      background: #091d34;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ==========================================
+       Screen C: ChatGPT Settings Connected State
+       ========================================== */
+    .gpt-settings-shell {
+      display: flex;
+      height: 100%;
+      background: #ffffff;
+      color: #0d0d0d;
+    }
+
+    .gpt-set-side {
+      width: 210px;
+      background: #f9f9f9;
+      border-right: 1px solid #ececec;
+      padding: 16px 12px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .gpt-set-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 2px;
+    }
+
+    .gpt-set-item.on {
+      background: #ececec;
+      font-weight: 600;
+      color: #0d0d0d;
+    }
+
+    .gpt-set-main {
+      flex: 1;
+      padding: 24px 36px;
+    }
+
+    .gpt-connected-row {
+      margin-top: 18px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .gpt-connected-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Bottom Status Bar */
+    .dvx-fd-footer {
+      padding: 12px 20px;
+      background: #050e16;
+      border-top: 1px solid var(--border-frame);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #9cb0c4;
+    }
+
+    .dvx-fd-ctrl {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .gpt-shell, .gpt-settings-shell { background: #f4f8f8; }
+    .gpt-side, .gpt-set-side { flex: 0 0 clamp(94px, 27vw, 168px); background: #e7efef; }
+    .gpt-body, .gpt-set-main { min-width: 0; }
+    .gpt-body { position: static; }
+    .gpt-dialog, .gpt-login-card, .auth0-card { max-width: calc(100% - 24px); }
+    .gpt-dialog, .auth0-card { max-height: calc(100% - 24px); overflow: auto; }
+    .gpt-connected-row { flex-wrap: wrap; gap: 12px; }
+    .dvx-full-demo:not(.is-playing) .dvx-cursor, .dvx-full-demo:not(.is-playing) .dvx-ring { visibility: hidden; }
+    .dvx-fd-tab:focus-visible, .dvx-fd-ctrl:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+
+    @media (max-width: 480px) {
+      .dvx-fd-header, .dvx-fd-footer { padding: 9px 12px; }
+      .dvx-fd-tabs { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dvx-fd-tab { justify-self: stretch; padding: 6px 4px; }
+      .gpt-body, .gpt-set-main { padding: 12px; }
+      .gpt-side { padding: 12px 6px; }
+      .gpt-side-top { padding: 4px 0 10px; }
+      .gpt-side-top > :last-child, .gpt-side .gpt-item:not(#elNavPlugins), .gpt-set-side { display: none; }
+      .gpt-item { padding: 6px; }
+      .gpt-head-tabs { gap: 6px; }
+      .gpt-hero h3 { font-size: 20px; }
+      .gpt-cards { grid-template-columns: 1fr; gap: 6px; }
+      .gpt-card { padding: 6px; }
+      .gpt-dialog, .gpt-login-card, .auth0-card { padding: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dvx-full-demo">
+  <div class="dvx-fd-header">
+    <span class="dvx-fd-label">Setup demo · Example screens</span>
+    <div class="dvx-fd-tabs">
+      <button type="button" class="dvx-fd-tab active" data-step="0" aria-current="step">1. Add MCP server</button>
+      <button type="button" class="dvx-fd-tab" data-step="1">2. Sign in</button>
+      <button type="button" class="dvx-fd-tab" data-step="2">3. Sign up if offered</button>
+      <button type="button" class="dvx-fd-tab" data-step="3">4. Authorize</button>
+    </div>
+  </div>
+
+  <div class="dvx-fd-progress">
+    <div class="dvx-fd-progress-fill" id="fdProgress"></div>
+  </div>
+
+  <div class="dvx-fd-viewport">
+    <div class="dvx-fd-canvas" id="fdCanvas" inert>
+      <!-- Dynamic Cursor -->
+      <svg class="dvx-cursor" id="fdCursor" viewBox="0 0 24 24" style="left: 50%; top: 50%;">
+        <path fill="#ffffff" stroke="#0a1622" stroke-width="1.6" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.53.35-.85L6.35 2.86a.5.5 0 0 0-.85.35Z"/>
+      </svg>
+      <div class="dvx-ring" id="fdRing"></div>
+
+      <!-- Screen A: ChatGPT Plugins Hub -->
+      <div class="dvx-screen gpt-shell active" data-screen="0">
+        <div class="gpt-side">
+          <div class="gpt-side-top">
+            <span class="gpt-logo-text">ChatGPT</span>
+            <span style="color:#6b7280;font-size:13px;">⌕ ◫</span>
+          </div>
+          <div class="gpt-item">✎ New chat</div>
+          <div class="gpt-item">🖼 Images</div>
+          <div class="gpt-item">📅 Scheduled</div>
+          <div class="gpt-item">📚 Library</div>
+          <div class="gpt-item active" id="elNavPlugins">@ Plugins</div>
+          <div class="gpt-item">⊞ Explore</div>
+        </div>
+
+        <div class="gpt-body">
+          <div class="gpt-head">
+            <div class="gpt-head-tabs"><span class="on">Plugins</span><span>Skills</span></div>
+            <div class="gpt-add-wrap">
+              <button class="gpt-add-btn" id="elAddBtn">Add ▾</button>
+              <div class="gpt-menu" id="elAddMenu">
+                <div class="gpt-menu-item">Create plugin</div>
+                <div class="gpt-menu-item">Upload plugin</div>
+                <div class="gpt-menu-item focus" id="elCustomMcpItem">Add custom MCP server</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gpt-hero">
+            <h3>Plugins</h3>
+            <p>Connect tools to let ChatGPT work across your knowledge</p>
+            <div class="gpt-search">⌕ Search plugins</div>
+            <div class="gpt-cards">
+              <div class="gpt-card"><span><strong>Gmail</strong> · Read and manage Gmail</span><span>+</span></div>
+              <div class="gpt-card"><span><strong>Google Drive</strong> · Docs, Sheets</span><span>+</span></div>
+              <div class="gpt-card"><span><strong>GitHub</strong> · Stage PRs & issues</span><span>+</span></div>
+              <div class="gpt-card"><span><strong>Booking.com</strong> · Hotels & stays</span><span>+</span></div>
+            </div>
+          </div>
+
+          <!-- Modal Overlay -->
+          <div class="gpt-mask" id="elGptMask">
+            <!-- 1. Add custom MCP server Form -->
+            <div class="gpt-dialog" id="elMcpDialog">
+              <div class="gpt-dlg-title"><span>Add custom MCP server</span><span style="color:#6b7280;font-weight:400;">✕</span></div>
+              <div class="gpt-icon-row">
+                <div class="gpt-icon-box">+</div>
+                <div style="font-size:11px;">
+                  <div style="font-weight:500;">Icon (optional)</div>
+                  <div style="color:#6b7280;font-size:10px;">PNG only. Best results at 256×256 px or larger.</div>
+                </div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-label"><span>Name</span></div>
+                <div class="gpt-input ph" id="elInputName">Custom Tool</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-label"><span>Description (optional)</span></div>
+                <div class="gpt-input ph">Explain what it does in a few words</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-label">
+                  <span>Connection</span>
+                  <div class="gpt-seg"><span class="on">Server URL</span><span>Tunnel</span></div>
+                </div>
+                <div class="gpt-input mono ph" id="elInputUrl">https://example.com/mcp</div>
+              </div>
+
+              <div class="gpt-field">
+                <div class="gpt-label"><span>Authentication</span></div>
+                <div class="gpt-input">OAuth</div>
+              </div>
+
+              <div class="gpt-adv">
+                <span>Advanced OAuth settings</span><span>›</span>
+              </div>
+
+              <div class="gpt-warn">
+                <span style="color:#9a3412;">⚠</span>
+                <span>Custom MCP servers introduce risk. <u>Learn more</u></span>
+              </div>
+
+              <div class="gpt-consent" id="elConsentBox">
+                <span class="gpt-chk" id="elChkConsent">✓</span>
+                <div style="font-size:10.5px;line-height:1.35;">
+                  <div style="font-weight:600;font-size:11.5px;margin-bottom:2px;">I understand and want to continue</div>
+                  <span style="color:#6b7280;">Only connect to MCP servers you trust. An untrusted server may access or steal information.</span>
+                </div>
+              </div>
+
+              <div class="gpt-dlg-foot">
+                <span style="font-size:11.5px;text-decoration:underline;font-weight:500;">Read the guide</span>
+                <div style="display:flex;gap:8px;">
+                  <button style="background:#fff;border:1px solid #d1d5db;border-radius:999px;padding:6px 13px;font-size:11.5px;">Cancel</button>
+                  <button class="gpt-btn-gray" id="elCreateBtn">Create as a plugin</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Sign in with your datavyx account Card -->
+            <div class="gpt-login-card" id="elLoginCard">
+              <div class="gpt-mcp-badge">🔌</div>
+              <div style="font-size:17px;font-weight:600;">datavyx</div>
+              <div style="font-size:12px;color:#6b7280;margin-top:4px;">Learn more</div>
+              <button class="gpt-login-btn" id="elOauthStartBtn">Sign in with your datavyx account ›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen B: Auth0 Sign-up & Consent Page -->
+      <div class="dvx-screen auth0-screen" data-screen="1">
+        <!-- B1: Login / Sign up Form -->
+        <div class="auth0-card" id="elAuthFormCard">
+          <div class="auth0-logo">D</div>
+          <h3 class="auth0-title" id="elAuthHeading">Welcome</h3>
+          <p class="auth0-sub" id="elAuthSub">Log in to Datavyx to continue to ChatGPT.</p>
+
+          <div class="auth0-input ph" id="elAuthEmail">Email address*</div>
+          <div class="auth0-input ph" id="elAuthPass">Password*</div>
+
+          <div class="auth0-pw-rules" id="elPwRules">
+            <div style="margin-bottom:4px;">Your password must contain:</div>
+            <div class="auth0-rule-ok">✓ At least 8 characters</div>
+            <div class="auth0-rule-ok">✓ Lower case letters (a-z) & numbers (0-9)</div>
+          </div>
+
+          <button class="auth0-submit" id="elAuthSubmitBtn">Continue</button>
+
+          <div class="auth0-switch" id="elAuthSwitchRow">
+            Don't have an account? <span class="auth0-link" id="elSwitchToSignup">Sign up</span>
+          </div>
+        </div>
+
+        <!-- B2: Authorize App Permissions -->
+        <div class="auth0-card" id="elAuthScopeCard" style="display:none;">
+          <div class="auth0-pair">
+            <div class="auth0-logo" style="margin:0;">D</div>
+            <span style="color:#9ca3af;font-size:18px;">⇄</span>
+            <div class="auth0-gpt-icon">⚙️</div>
+          </div>
+          <h3 class="auth0-title" style="font-size:18px;">Authorize App</h3>
+          <p class="auth0-sub" style="margin-bottom:8px;">
+            Hi alex@example.com,<br/>ChatGPT is requesting access to your Datavyx personal knowledge space.
+          </p>
+          <ul class="auth0-scopes">
+            <li>• <strong>Read:</strong> knowledge:read</li>
+            <li>• <strong>Record:</strong> knowledge:record</li>
+            <li>• <strong>Update:</strong> knowledge:update</li>
+            <li>• <strong>Delete:</strong> knowledge:delete</li>
+            <li>• <strong>Restore:</strong> knowledge:restore</li>
+            <li>• <strong>History:</strong> knowledge:history</li>
+            <li>• <strong>Bulk:</strong> knowledge:bulk</li>
+          </ul>
+          <div class="auth0-warn-box">External app: You will be redirected to chatgpt.com after authorization</div>
+          <div class="auth0-actions">
+            <button class="auth0-btn-decline">Decline</button>
+            <button class="auth0-btn-accept" id="elAcceptBtn">Accept</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen C: ChatGPT Settings Connected State -->
+      <div class="dvx-screen gpt-settings-shell" data-screen="2">
+        <div class="gpt-set-side">
+          <div style="padding:6px 10px 14px;color:#6b7280;font-size:12px;">← Back to chat</div>
+          <div class="gpt-set-item">General</div>
+          <div class="gpt-set-item">Notifications</div>
+          <div class="gpt-set-item">Personalization</div>
+          <div class="gpt-set-item on">Plugins</div>
+          <div class="gpt-set-item">Data controls</div>
+        </div>
+        <div class="gpt-set-main">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="margin:0 0 4px;font-size:18px;">Plugins</h3>
+              <p style="margin:0;font-size:12.5px;color:#6b7280;">Manage plugins, connected accounts, and permissions</p>
+            </div>
+            <span style="border:1px solid #d1d5db;border-radius:999px;padding:5px 12px;font-size:12px;">Browse directory</span>
+          </div>
+
+          <div class="gpt-connected-row" id="elConnectedRow">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:9px;background:#091d34;color:#5de4c7;display:flex;align-items:center;justify-content:center;font-weight:700;">D</div>
+              <div>
+                <div style="font-weight:600;font-size:14px;">datavyx</div>
+                <div style="font-size:12px;color:#6b7280;">https://kb.datavyx.com/mcp</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="gpt-connected-badge">● Connected</span>
+              <span style="color:#6b7280;">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dvx-fd-footer">
+    <span id="fdCaption">Step 1: Open Plugins → click Add → enter Name & MCP Server URL</span>
+    <button class="dvx-fd-ctrl" id="fdPlayBtn">Pause</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const STEP_DURATIONS = [7200, 3400, 6800, 5600];
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    let step = 0;
+    let playing = !motion.matches;
+    let elapsed = 0;
+    let lastTime = performance.now();
+    let timers = [];
+    let frame;
+
+    const demo = document.querySelector(".dvx-full-demo");
+    const playButton = document.getElementById("fdPlayBtn");
+    const canvas = document.getElementById("fdCanvas");
+    const cursor = document.getElementById("fdCursor");
+    const ring = document.getElementById("fdRing");
+    const progress = document.getElementById("fdProgress");
+    const caption = document.getElementById("fdCaption");
+    const tabs = document.querySelectorAll(".dvx-fd-tab");
+    const screens = document.querySelectorAll(".dvx-screen");
+
+    function clearAll() {
+      timers.forEach((id) => clearTimeout(id));
+      timers = [];
+    }
+
+    function getPos(el, rx = 0.5, ry = 0.5) {
+      const prev = canvas.style.transform;
+      canvas.style.transition = "none";
+      canvas.style.transform = "scale(1)";
+      const cRect = canvas.getBoundingClientRect();
+      const eRect = el.getBoundingClientRect();
+      canvas.style.transform = prev;
+      void canvas.offsetWidth;
+      canvas.style.transition = "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)";
+      return {
+        x: eRect.left - cRect.left + eRect.width * rx,
+        y: eRect.top - cRect.top + eRect.height * ry
+      };
+    }
+
+    function moveAndClick(el, clickDelay, rx = 0.5, ry = 0.5) {
+      const p = getPos(el, rx, ry);
+      cursor.style.left = p.x + "px";
+      cursor.style.top = p.y + "px";
+      if (clickDelay !== undefined) {
+        timers.push(
+          setTimeout(() => {
+            ring.style.left = p.x + "px";
+            ring.style.top = p.y + "px";
+            ring.classList.remove("animate");
+            void ring.offsetWidth;
+            ring.classList.add("animate");
+          }, clickDelay)
+        );
+      }
+    }
+
+    function zoomTo(scale, el) {
+      if (!el || scale === 1 || canvas.clientWidth < 520) {
+        canvas.style.transformOrigin = "50% 50%";
+        canvas.style.transform = "scale(1)";
+        return;
+      }
+      const p = getPos(el, 0.5, 0.5);
+      canvas.style.transformOrigin = `${p.x}px ${p.y}px`;
+      canvas.style.transform = `scale(${scale})`;
+    }
+
+    function typeText(el, str, speed, done) {
+      el.textContent = "";
+      el.classList.remove("ph");
+      el.classList.add("focus");
+      let i = 0;
+      function next() {
+        if (i < str.length) {
+          el.textContent += str.charAt(i++);
+          timers.push(setTimeout(next, speed));
+        } else {
+          el.classList.remove("focus");
+          if (done) done();
+        }
+      }
+      next();
+    }
+
+    function showScreen(idx) {
+      screens.forEach((sc, i) => sc.classList.toggle("active", i === idx));
+    }
+
+    function runStep(s) {
+      clearAll();
+      step = s;
+      elapsed = 0;
+      lastTime = performance.now();
+      progress.style.width = "0%";
+      const animate = playing && !motion.matches;
+      demo.classList.toggle("is-playing", animate);
+      ring.classList.remove("animate");
+      zoomTo(1);
+      tabs.forEach((tab, index) => {
+        tab.classList.toggle("active", index === s);
+        if (index === s) tab.setAttribute("aria-current", "step");
+        else tab.removeAttribute("aria-current");
+      });
+
+      if (s === 0) {
+        // Step 1: Plugins -> Add -> Add custom MCP server -> Fill & Create
+        showScreen(0);
+        caption.textContent = "Step 1: Open Plugins → Add custom MCP server. Enter Datavyx and paste the server address.";
+
+        const navPlugins = document.getElementById("elNavPlugins");
+        const addBtn = document.getElementById("elAddBtn");
+        const addMenu = document.getElementById("elAddMenu");
+        const customItem = document.getElementById("elCustomMcpItem");
+        const mask = document.getElementById("elGptMask");
+        const mcpDialog = document.getElementById("elMcpDialog");
+        const loginCard = document.getElementById("elLoginCard");
+        const inName = document.getElementById("elInputName");
+        const inUrl = document.getElementById("elInputUrl");
+        const consentBox = document.getElementById("elConsentBox");
+        const chk = document.getElementById("elChkConsent");
+        const createBtn = document.getElementById("elCreateBtn");
+
+        addMenu.classList.remove("open");
+        mask.classList.remove("open");
+        mcpDialog.classList.add("show");
+        loginCard.classList.remove("show");
+        navPlugins.classList.add("highlight-ring");
+
+        inName.textContent = "Custom Tool";
+        inName.classList.add("ph");
+        inUrl.textContent = "https://example.com/mcp";
+        inUrl.classList.add("ph");
+        consentBox.classList.remove("checked");
+        chk.classList.remove("checked");
+        createBtn.classList.remove("ready");
+
+        if (!animate) {
+          navPlugins.classList.remove("highlight-ring");
+          mask.classList.add("open");
+          inName.textContent = "Datavyx";
+          inName.classList.remove("ph");
+          inUrl.textContent = "https://kb.datavyx.com/mcp";
+          inUrl.classList.remove("ph");
+          return;
+        }
+
+        // Pause briefly on left sidebar Plugins
+        zoomTo(1.18, navPlugins);
+        moveAndClick(navPlugins, 350);
+
+        // Move to top-right Add button
+        timers.push(setTimeout(() => {
+          navPlugins.classList.remove("highlight-ring");
+          zoomTo(1.18, addBtn);
+          moveAndClick(addBtn, 550);
+        }, 1150));
+
+        timers.push(setTimeout(() => {
+          addMenu.classList.add("open");
+        }, 1750));
+
+        // Click Add custom MCP server
+        timers.push(setTimeout(() => {
+          moveAndClick(customItem, 480);
+        }, 2150));
+
+        // Fill Name & Server URL
+        timers.push(setTimeout(() => {
+          addMenu.classList.remove("open");
+          zoomTo(1.06, mcpDialog);
+          mask.classList.add("open");
+          moveAndClick(inName, 300, 0.35, 0.5);
+
+          timers.push(setTimeout(() => {
+            typeText(inName, "Datavyx", 45, () => {
+              moveAndClick(inUrl, 300, 0.4, 0.5);
+              timers.push(setTimeout(() => {
+                inUrl.classList.remove("ph");
+                inUrl.textContent = "https://kb.datavyx.com/mcp";
+
+                // Pause 0.9s so user sees where URL goes
+                timers.push(setTimeout(() => {
+                  moveAndClick(chk, 480);
+                  timers.push(setTimeout(() => {
+                    chk.classList.add("checked");
+                    consentBox.classList.add("checked");
+                    createBtn.classList.add("ready");
+
+                    // Click Create as a plugin
+                    moveAndClick(createBtn, 480);
+                  }, 520));
+                }, 900));
+              }, 350));
+            });
+          }, 350));
+        }, 2750));
+      }
+
+      if (s === 1) {
+        // Step 2: Click Sign in with your datavyx account
+        showScreen(0);
+        caption.textContent = "Step 2: Click 'Sign in with your datavyx account' to launch OAuth";
+
+        const mask = document.getElementById("elGptMask");
+        const mcpDialog = document.getElementById("elMcpDialog");
+        const loginCard = document.getElementById("elLoginCard");
+        const oauthBtn = document.getElementById("elOauthStartBtn");
+
+        mask.classList.add("open");
+        mcpDialog.classList.remove("show");
+        loginCard.classList.add("show");
+
+        if (!animate) return;
+        zoomTo(1.15, loginCard);
+        timers.push(setTimeout(() => {
+          moveAndClick(oauthBtn, 600);
+        }, 1100));
+      }
+
+      if (s === 2) {
+        // Step 3: Click Sign up -> Enter email & password -> Continue
+        showScreen(1);
+        caption.textContent = "Step 3: Sign in, or select Sign up if the authorization window offers it.";
+
+        const formCard = document.getElementById("elAuthFormCard");
+        const scopeCard = document.getElementById("elAuthScopeCard");
+        const heading = document.getElementById("elAuthHeading");
+        const sub = document.getElementById("elAuthSub");
+        const switchRow = document.getElementById("elAuthSwitchRow");
+        const emailBox = document.getElementById("elAuthEmail");
+        const passBox = document.getElementById("elAuthPass");
+        const pwRules = document.getElementById("elPwRules");
+        const submitBtn = document.getElementById("elAuthSubmitBtn");
+
+        formCard.style.display = "block";
+        scopeCard.style.display = "none";
+        heading.textContent = "Welcome";
+        sub.textContent = "Log in to Datavyx to continue to ChatGPT.";
+        switchRow.innerHTML = 'Don\'t have an account? <span class="auth0-link" id="elSwitchToSignup">Sign up</span>';
+        emailBox.textContent = "Email address*";
+        emailBox.classList.add("ph");
+        passBox.textContent = "Password*";
+        passBox.classList.add("ph");
+        pwRules.classList.remove("show");
+
+        if (!animate) return;
+        zoomTo(1.08, formCard);
+        const signupLink = document.getElementById("elSwitchToSignup");
+
+        timers.push(setTimeout(() => {
+          moveAndClick(signupLink, 550);
+          timers.push(setTimeout(() => {
+            sub.textContent = "Create your Datavyx account to initialize a personal workspace.";
+            switchRow.innerHTML = 'Already have an account? <span class="auth0-link">Log in</span>';
+
+            moveAndClick(emailBox, 350, 0.35, 0.5);
+            timers.push(setTimeout(() => {
+              typeText(emailBox, "alex@example.com", 35, () => {
+                moveAndClick(passBox, 350, 0.35, 0.5);
+                timers.push(setTimeout(() => {
+                  pwRules.classList.add("show");
+                  typeText(passBox, "••••••••••••", 45, () => {
+                    timers.push(setTimeout(() => {
+                      moveAndClick(submitBtn, 550);
+                    }, 600));
+                  });
+                }, 400));
+              });
+            }, 400));
+          }, 600));
+        }, 900));
+      }
+
+      if (s === 3) {
+        // Step 4: Click Accept -> Redirect back to ChatGPT Connected
+        showScreen(1);
+        caption.textContent = "Step 4: Review the requested access. If you accept, check that Datavyx shows as connected in ChatGPT.";
+
+        const formCard = document.getElementById("elAuthFormCard");
+        const scopeCard = document.getElementById("elAuthScopeCard");
+        const acceptBtn = document.getElementById("elAcceptBtn");
+        const connectedRow = document.getElementById("elConnectedRow");
+
+        formCard.style.display = "none";
+        scopeCard.style.display = "block";
+
+        if (!animate) return;
+        zoomTo(1.06, scopeCard);
+
+        timers.push(setTimeout(() => {
+          moveAndClick(acceptBtn, 600);
+        }, 1400));
+
+        timers.push(setTimeout(() => {
+          showScreen(2);
+          zoomTo(1.08, connectedRow);
+          moveAndClick(connectedRow, 500, 0.82, 0.5);
+        }, 2500));
+
+        timers.push(setTimeout(() => {
+          zoomTo(1, null);
+        }, 4400));
+      }
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => runStep(Number(tab.dataset.step)));
+    });
+
+    function loop(now) {
+      elapsed += Math.min(now - lastTime, 100);
+      lastTime = now;
+      const duration = STEP_DURATIONS[step];
+      progress.style.width = Math.min((elapsed / duration) * 100, 100) + "%";
+      if (elapsed >= duration) {
+        runStep((step + 1) % STEP_DURATIONS.length);
+      }
+      frame = requestAnimationFrame(loop);
+    }
+
+    function start() {
+      playButton.textContent = "Pause";
+      runStep(step);
+      frame = requestAnimationFrame(loop);
+    }
+
+    function pause() {
+      playing = false;
+      cancelAnimationFrame(frame);
+      clearAll();
+      playButton.textContent = "Play";
+      demo.classList.remove("is-playing");
+    }
+
+    playButton.addEventListener("click", () => {
+      if (playing) {
+        pause();
+      } else {
+        playing = true;
+        start();
+      }
+    });
+    motion.addEventListener("change", () => {
+      if (motion.matches) {
+        pause();
+        runStep(step);
+      }
+    });
+    if (playing) start();
+    else {
+      playButton.textContent = "Play";
+      runStep(0);
+    }
+  })();
+</script>
+
+</body>
+</html>
